@@ -155,16 +155,13 @@ function Auth({ onLogin }) {
       setPinReveal({ profile, needsConfirmation: !signUpData.session })
     } catch (err) {
       console.error(err)
-      // --- SEMENTARA UNTUK DEBUGGING: tampilkan detail error asli ---
-      const debugMsg = [
-        err?.message,
-        err?.status ? `(status: ${err.status})` : '',
-        err?.code ? `(code: ${err.code})` : '',
-      ]
-        .filter(Boolean)
-        .join(' ')
-      setError(debugMsg || 'Gagal daftar akun. Coba lagi.')
-      // --- akhir bagian debugging ---
+      let msg = 'Gagal daftar akun. Coba lagi.'
+      if (err?.code === 'over_email_send_rate_limit' || err?.status === 429) {
+        msg = 'Terlalu banyak percobaan daftar. Coba lagi beberapa menit lagi.'
+      } else if (err?.message?.toLowerCase().includes('already registered')) {
+        msg = 'Email sudah terdaftar. Coba login.'
+      }
+      setError(msg)
     } finally {
       setLoading(false)
     }
@@ -357,8 +354,10 @@ function BottomNav({ tabs, activeTab, onChange, hideOnMobile, badges }) {
           className="nav-indicator"
           style={{
             width: `${100 / tabs.length}%`,
+            '--nav-x': `${activeIndex * 100}%`,
             transform: `translateX(${activeIndex * 100}%)`,
           }}
+          key={activeTab}
         />
         {tabs.map((tab) => {
           const badgeCount = badges?.[tab.id]
