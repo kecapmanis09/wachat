@@ -155,10 +155,16 @@ function Auth({ onLogin }) {
       setPinReveal({ profile, needsConfirmation: !signUpData.session })
     } catch (err) {
       console.error(err)
-      const msg = err?.message?.toLowerCase().includes('already registered')
-        ? 'Email sudah terdaftar. Coba login.'
-        : 'Gagal daftar akun. Coba lagi.'
-      setError(msg)
+      // --- SEMENTARA UNTUK DEBUGGING: tampilkan detail error asli ---
+      const debugMsg = [
+        err?.message,
+        err?.status ? `(status: ${err.status})` : '',
+        err?.code ? `(code: ${err.code})` : '',
+      ]
+        .filter(Boolean)
+        .join(' ')
+      setError(debugMsg || 'Gagal daftar akun. Coba lagi.')
+      // --- akhir bagian debugging ---
     } finally {
       setLoading(false)
     }
