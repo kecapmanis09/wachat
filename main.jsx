@@ -90,13 +90,19 @@ function Login({ onLogin }) {
 /* ============================================================
    Navbar
    ============================================================ */
-function Navbar({ title }) {
+function Navbar({ title, showActions }) {
   return (
     <header className="navbar">
       <div className="navbar-brand">
         <span className="navbar-logo">💬</span>
         <span>{title || 'ChatKu'}</span>
       </div>
+      {showActions && (
+        <div className="navbar-actions">
+          <button className="navbar-action" aria-label="Kamera" title="Kamera">📷</button>
+          <button className="navbar-action" aria-label="Menu lainnya" title="Menu lainnya">⋮</button>
+        </div>
+      )}
     </header>
   )
 }
@@ -104,20 +110,27 @@ function Navbar({ title }) {
 /* ============================================================
    BottomNav
    ============================================================ */
-function BottomNav({ tabs, activeTab, onChange, hideOnMobile }) {
+function BottomNav({ tabs, activeTab, onChange, hideOnMobile, badges }) {
   return (
     <nav className={`bottom-nav ${hideOnMobile ? 'bottom-nav-hide-mobile' : ''}`}>
       <div className="bottom-nav-inner">
-        {tabs.map((tab) => (
-          <button
-            key={tab.id}
-            className={`bottom-nav-item ${activeTab === tab.id ? 'active' : ''}`}
-            onClick={() => onChange(tab.id)}
-            aria-label={tab.label}
-          >
-            <span className="bottom-nav-icon">{tab.icon}</span>
-          </button>
-        ))}
+        {tabs.map((tab) => {
+          const badgeCount = badges?.[tab.id]
+          return (
+            <button
+              key={tab.id}
+              className={`bottom-nav-item ${activeTab === tab.id ? 'active' : ''}`}
+              onClick={() => onChange(tab.id)}
+              aria-label={tab.label}
+            >
+              <span className="bottom-nav-icon-wrap">
+                <span className="bottom-nav-icon">{tab.icon}</span>
+                {!!badgeCount && <span className="bottom-nav-badge">{badgeCount > 99 ? '99+' : badgeCount}</span>}
+              </span>
+              <span className="bottom-nav-label">{tab.label}</span>
+            </button>
+          )
+        })}
       </div>
     </nav>
   )
@@ -126,7 +139,7 @@ function BottomNav({ tabs, activeTab, onChange, hideOnMobile }) {
 /* ============================================================
    Sidebar
    ============================================================ */
-function Sidebar({ currentUser, selectedConversation, onSelectConversation }) {
+function Sidebar({ currentUser, selectedConversation, onSelectConversation, onConversationsChange }) {
   const [conversations, setConversations] = useState([])
   const [search, setSearch] = useState('')
   const [results, setResults] = useState([])
@@ -150,7 +163,7 @@ function Sidebar({ currentUser, selectedConversation, onSelectConversation }) {
     if (ids.length > 0) {
       const { data: msgs } = await supabase
         .from('messages')
-        .select('conversation_id, content, created_at')
+        .select('conversation_id, content, created_at, sender_id')
         .in('conversation_id', ids)
         .order('created_at', { ascending: false })
 
@@ -172,12 +185,14 @@ function Sidebar({ currentUser, selectedConversation, onSelectConversation }) {
           other,
           lastMessage: last?.content ?? 'Belum ada pesan',
           lastAt: last?.created_at ?? c.created_at,
+          lastMine: last ? last.sender_id === currentUser.id : false,
         }
       })
       .sort((a, b) => new Date(b.lastAt) - new Date(a.lastAt))
 
     setConversations(withPreview)
-  }, [currentUser.id])
+    onConversationsChange?.(withPreview.length)
+  }, [currentUser.id, onConversationsChange])
 
   useEffect(() => {
     loadConversations()
@@ -246,15 +261,31 @@ function Sidebar({ currentUser, selectedConversation, onSelectConversation }) {
     onSelectConversation({ id: conversationId, other: otherUser })
   }
 
+  function formatListTime(iso) {
+    const date = new Date(iso)
+    const now = new Date()
+    const sameDay = date.toDateString() === now.toDateString()
+    if (sameDay) {
+      return date.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })
+    }
+    const yesterday = new Date(now)
+    yesterday.setDate(now.getDate() - 1)
+    if (date.toDateString() === yesterday.toDateString()) return 'Kemarin'
+    return date.toLocaleDateString('id-ID', { day: '2-digit', month: '2-digit', year: '2-digit' })
+  }
+
   return (
     <aside className="sidebar">
       <div className="sidebar-search">
-        <input
-          type="text"
-          placeholder="Cari username untuk mulai chat..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
+        <div className="sidebar-search-box">
+          <span className="sidebar-search-icon">🔍</span>
+          <input
+            type="text"
+            placeholder="Cari atau mulai chat baru"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+        </div>
       </div>
 
       {search && (
@@ -286,8 +317,14 @@ function Sidebar({ currentUser, selectedConversation, onSelectConversation }) {
           >
             <div className="avatar">{c.other.username[0].toUpperCase()}</div>
             <div className="conversation-info">
-              <div className="conversation-name">@{c.other.username}</div>
-              <div className="conversation-preview">{c.lastMessage}</div>
+              <div className="conversation-info-top">
+                <div className="conversation-name">@{c.other.username}</div>
+                <div className="conversation-time">{formatListTime(c.lastAt)}</div>
+              </div>
+              <div className="conversation-preview">
+                {c.lastMine && <span className="conversation-tick">✓✓</span>}
+                <span className="conversation-preview-text">{c.lastMessage}</span>
+              </div>
             </div>
           </div>
         ))}
@@ -431,6 +468,7 @@ function App() {
   const [selectedConversation, setSelectedConversation] = useState(null)
   const [ready, setReady] = useState(false)
   const [activeTab, setActiveTab] = useState('chats')
+  const [conversationCount, setConversationCount] = useState(0)
 
   useEffect(() => {
     const saved = localStorage.getItem('wa_chat_user')
@@ -467,7 +505,7 @@ function App() {
 
   return (
     <div className="app-shell">
-      <Navbar title={activeTabInfo.label} />
+      <Navbar title={activeTabInfo.label} showActions={activeTab === 'chats'} />
 
       <div className={`app-body ${selectedConversation ? 'has-conversation' : ''}`}>
         {activeTab === 'chats' && (
@@ -476,6 +514,7 @@ function App() {
               currentUser={user}
               selectedConversation={selectedConversation}
               onSelectConversation={setSelectedConversation}
+              onConversationsChange={setConversationCount}
             />
             <ChatWindow
               currentUser={user}
@@ -517,6 +556,7 @@ function App() {
         activeTab={activeTab}
         onChange={handleTabChange}
         hideOnMobile={activeTab === 'chats' && !!selectedConversation}
+        badges={{ chats: conversationCount }}
       />
     </div>
   )
