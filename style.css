@@ -209,7 +209,11 @@ input:focus-visible {
 .login-card > form,
 .login-card > .login-logo,
 .login-card > h1,
-.login-card > p {
+.login-card > p,
+.login-card > .auth-tabs,
+.login-card > .pin-display,
+.login-card > .pin-copy-btn,
+.login-card > .pin-note {
   padding-left: 36px;
   padding-right: 36px;
 }
@@ -244,6 +248,47 @@ input:focus-visible {
   color: var(--text-muted);
   font-size: 14px;
   margin-bottom: 24px;
+}
+
+/* ---------- Auth tabs (toggle Masuk / Daftar) ---------- */
+.auth-tabs {
+  position: relative;
+  display: flex;
+  background: var(--surface-2);
+  border-radius: 12px;
+  padding: 4px;
+  margin-bottom: 20px;
+}
+
+.auth-tabs-indicator {
+  position: absolute;
+  top: 4px;
+  bottom: 4px;
+  left: 4px;
+  width: calc(50% - 4px);
+  background: var(--yellow);
+  border-radius: 9px;
+  transition: transform 0.28s var(--ease-emphasized);
+  z-index: 0;
+}
+
+.auth-tabs button {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  background: transparent;
+  border: none;
+  padding: 9px 0;
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--text-muted);
+  cursor: pointer;
+  border-radius: 9px;
+  transition: color 0.2s var(--ease-standard);
+}
+
+.auth-tabs button.active {
+  color: var(--on-yellow);
 }
 
 .login-card form {
@@ -334,6 +379,68 @@ input:focus-visible {
   to {
     transform: rotate(360deg);
   }
+}
+
+/* ---------- PIN reveal (setelah daftar akun, ala BBM) ---------- */
+.pin-reveal-card .login-logo {
+  background: var(--surface-2);
+  color: var(--yellow);
+}
+
+.pin-reveal-card h1 {
+  font-size: 22px;
+}
+
+.pin-display {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.pin-char {
+  width: 30px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--surface-2);
+  border: 1.5px solid var(--yellow);
+  border-radius: 8px;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 17px;
+  color: var(--yellow);
+}
+
+.pin-copy-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 11px;
+  background: var(--surface-2);
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  color: var(--text);
+  font-size: 13.5px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-bottom: 18px;
+  transition: background 0.15s var(--ease-standard), border-color 0.15s var(--ease-standard);
+}
+
+.pin-copy-btn:hover {
+  background: var(--surface-3);
+  border-color: var(--yellow);
+}
+
+.pin-note {
+  font-size: 13px;
+  line-height: 1.5;
+  margin-bottom: 18px !important;
 }
 
 /* ---------- Snackbar (Material toast, ganti error text polos) ---------- */
@@ -499,6 +606,32 @@ input:focus-visible {
   padding: 10px 14px 10px;
 }
 
+.search-mode-tabs {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+
+.search-mode-tabs button {
+  flex: 1;
+  background: var(--surface-2);
+  border: 1.5px solid transparent;
+  color: var(--text-muted);
+  font-size: 11.5px;
+  font-weight: 600;
+  padding: 6px 8px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background 0.15s var(--ease-standard), color 0.15s var(--ease-standard),
+    border-color 0.15s var(--ease-standard);
+}
+
+.search-mode-tabs button.active {
+  background: var(--yellow-tint);
+  border-color: var(--yellow);
+  color: var(--yellow);
+}
+
 .sidebar-search-box {
   display: flex;
   align-items: center;
@@ -567,6 +700,13 @@ input:focus-visible {
   margin: 2px 6px;
   border-left: 3px solid transparent;
   transition: background 0.15s var(--ease-standard);
+}
+
+.result-pin {
+  font-size: 11.5px;
+  color: var(--text-muted);
+  letter-spacing: 0.03em;
+  margin-top: 2px;
 }
 
 .search-result-item:hover,
@@ -1185,6 +1325,55 @@ input:focus-visible {
 .settings-row span:not(.m-icon) {
   font-size: 14.5px;
   color: var(--text);
+}
+
+.settings-row {
+  cursor: default;
+}
+
+.settings-pin-row {
+  gap: 12px;
+}
+
+.settings-pin-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+  min-width: 0;
+}
+
+.settings-pin-label {
+  font-size: 11.5px;
+  color: var(--text-muted);
+}
+
+.settings-pin-value {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 15px;
+  letter-spacing: 0.08em;
+  color: var(--yellow);
+}
+
+.settings-pin-copy {
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  border: none;
+  background: var(--surface-2);
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.15s var(--ease-standard);
+}
+
+.settings-pin-copy:hover {
+  background: var(--surface-3);
+  color: var(--yellow);
 }
 
 .settings-logout {
