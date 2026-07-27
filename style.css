@@ -427,49 +427,64 @@
         background: var(--accent-hover);
       }
 
-      /* ---------- Bottom nav ---------- */
+      /* ---------- Bottom nav (pill mengambang, gaya kontrol video call) ---------- */
       .bottom-nav {
         display: flex;
+        justify-content: center;
+        align-items: center;
         flex-shrink: 0;
-        background: var(--surface);
-        border-top: 1px solid var(--border);
-        padding-bottom: env(safe-area-inset-bottom, 0px);
+        background: transparent;
+        padding: 14px 16px calc(14px + env(safe-area-inset-bottom, 0px));
+      }
+
+      .bottom-nav-inner {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 8px;
+        border-radius: 999px;
+        background: rgba(35, 35, 38, 0.55);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.18);
       }
 
       .bottom-nav-item {
-        flex: 1;
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        gap: 3px;
-        background: none;
+        gap: 0;
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.12);
         border: none;
-        padding: 8px 4px 10px;
         cursor: pointer;
-        color: var(--text-muted);
-        transition: color 0.15s;
+        color: #ffffff;
+        transition: background 0.15s, color 0.15s;
+        flex-shrink: 0;
       }
 
       .bottom-nav-item:hover {
-        color: var(--text);
+        background: rgba(255, 255, 255, 0.2);
       }
 
       .bottom-nav-item.active {
-        color: var(--accent);
+        background: var(--accent);
+        color: #fff;
       }
 
       .bottom-nav-icon {
-        font-size: 21px;
+        font-size: 20px;
         line-height: 1;
       }
 
       .bottom-nav-label {
-        font-size: 11px;
-        font-weight: 600;
+        display: none;
       }
 
-      /* ---------- Placeholder tabs (Update / Komunitas / Panggilan) ---------- */
+      /* ---------- Placeholder tabs (Update / Panggilan) ---------- */
       .placeholder-screen {
         flex: 1;
         display: flex;
