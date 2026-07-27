@@ -1147,9 +1147,22 @@ input:focus-visible {
   bottom: 2px;
   border-radius: 16px;
   background: var(--yellow-tint);
-  transition: transform 0.32s var(--ease-emphasized);
+  transform-origin: center;
+  transition: transform 0.38s var(--ease-emphasized), opacity 0.2s var(--ease-standard);
   pointer-events: none;
   z-index: 0;
+  animation: navIndicatorPop 0.38s var(--ease-emphasized);
+}
+
+@keyframes navIndicatorPop {
+  from {
+    opacity: 0;
+    transform: translateX(var(--nav-x, 0)) scale(0.85);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(var(--nav-x, 0)) scale(1);
+  }
 }
 
 .bottom-nav-item {
@@ -1166,11 +1179,15 @@ input:focus-visible {
   color: var(--text-muted);
   position: relative;
   z-index: 1;
-  transition: color 0.2s var(--ease-standard);
+  transition: color 0.28s var(--ease-standard);
 }
 
 .bottom-nav-item:hover {
   color: var(--text);
+}
+
+.bottom-nav-item:active .bottom-nav-icon-wrap {
+  transform: scale(0.88);
 }
 
 .bottom-nav-item.active {
@@ -1186,16 +1203,29 @@ input:focus-visible {
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: transform 0.2s var(--ease-emphasized);
+  transition: transform 0.32s var(--ease-emphasized);
 }
 
 .bottom-nav-item.active .bottom-nav-icon-wrap {
-  transform: translateY(-1px);
+  animation: navIconBounce 0.38s var(--ease-emphasized);
+}
+
+@keyframes navIconBounce {
+  0% {
+    transform: translateY(0) scale(1);
+  }
+  40% {
+    transform: translateY(-4px) scale(1.15);
+  }
+  100% {
+    transform: translateY(-1px) scale(1);
+  }
 }
 
 .bottom-nav-icon {
   font-size: 22px;
   line-height: 1;
+  transition: transform 0.2s var(--ease-standard);
 }
 
 .bottom-nav-badge {
@@ -1214,6 +1244,19 @@ input:focus-visible {
   align-items: center;
   justify-content: center;
   box-shadow: 0 0 0 2px var(--surface);
+  animation: navBadgePop 0.28s var(--ease-emphasized);
+}
+
+@keyframes navBadgePop {
+  from {
+    transform: scale(0);
+  }
+  60% {
+    transform: scale(1.2);
+  }
+  to {
+    transform: scale(1);
+  }
 }
 
 .bottom-nav-label {
@@ -1221,6 +1264,12 @@ input:focus-visible {
   font-size: 11px;
   font-weight: 600;
   line-height: 1;
+  letter-spacing: 0.1px;
+  transition: transform 0.28s var(--ease-emphasized), opacity 0.2s var(--ease-standard);
+}
+
+.bottom-nav-item.active .bottom-nav-label {
+  transform: translateY(0.5px);
 }
 
 /* ---------- Placeholder tabs (Update / Panggilan) ---------- */
