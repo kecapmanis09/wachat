@@ -6,6 +6,7 @@ export default function Navbar({ user, onLogout }) {
         <span>ChatKu</span>
       </div>
       <div className="navbar-user">
+        <div className="navbar-avatar">{user.username[0].toUpperCase()}</div>
         <span className="navbar-username">@{user.username}</span>
         <button className="navbar-logout" onClick={onLogout} title="Keluar">
           Keluar
