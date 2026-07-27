@@ -107,16 +107,18 @@ function Navbar({ title }) {
 function BottomNav({ tabs, activeTab, onChange, hideOnMobile }) {
   return (
     <nav className={`bottom-nav ${hideOnMobile ? 'bottom-nav-hide-mobile' : ''}`}>
-      {tabs.map((tab) => (
-        <button
-          key={tab.id}
-          className={`bottom-nav-item ${activeTab === tab.id ? 'active' : ''}`}
-          onClick={() => onChange(tab.id)}
-        >
-          <span className="bottom-nav-icon">{tab.icon}</span>
-          <span className="bottom-nav-label">{tab.label}</span>
-        </button>
-      ))}
+      <div className="bottom-nav-inner">
+        {tabs.map((tab) => (
+          <button
+            key={tab.id}
+            className={`bottom-nav-item ${activeTab === tab.id ? 'active' : ''}`}
+            onClick={() => onChange(tab.id)}
+            aria-label={tab.label}
+          >
+            <span className="bottom-nav-icon">{tab.icon}</span>
+          </button>
+        ))}
+      </div>
     </nav>
   )
 }
@@ -420,7 +422,6 @@ function ChatWindow({ currentUser, conversation, onBack }) {
 const TABS = [
   { id: 'chats', label: 'Chat', icon: '💬' },
   { id: 'updates', label: 'Update', icon: '🔄' },
-  { id: 'communities', label: 'Komunitas', icon: '👥' },
   { id: 'calls', label: 'Panggilan', icon: '📞' },
   { id: 'settings', label: 'Setelan', icon: '⚙️' },
 ]
@@ -489,14 +490,6 @@ function App() {
             <div className="placeholder-icon">🔄</div>
             <h2>Update</h2>
             <p>Fitur status/update akan segera hadir.</p>
-          </div>
-        )}
-
-        {activeTab === 'communities' && (
-          <div className="placeholder-screen">
-            <div className="placeholder-icon">👥</div>
-            <h2>Komunitas</h2>
-            <p>Fitur komunitas akan segera hadir.</p>
           </div>
         )}
 
