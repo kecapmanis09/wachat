@@ -208,11 +208,36 @@
         color: var(--text);
         display: flex;
         align-items: center;
-        justify-content: center;
+        justify-content: space-between;
         padding: 0 20px;
         flex-shrink: 0;
         border-bottom: 1px solid var(--border);
         position: relative;
+      }
+
+      .navbar-actions {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .navbar-action {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        border: none;
+        background: transparent;
+        color: var(--text);
+        font-size: 17px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: background 0.15s;
+      }
+
+      .navbar-action:hover {
+        background: var(--surface-2);
       }
 
       .navbar::before {
@@ -266,28 +291,47 @@
       }
 
       .sidebar-search {
-        padding: 14px 14px 10px;
+        padding: 10px 14px 10px;
       }
 
-      .sidebar-search input {
+      .sidebar-search-box {
+        display: flex;
+        align-items: center;
+        gap: 10px;
         width: 100%;
-        padding: 10px 16px;
+        padding: 9px 16px;
         background: var(--surface-2);
-        color: var(--text);
         border: 1.5px solid transparent;
-        border-radius: 10px;
-        font-size: 14px;
-        font-family: var(--font-body);
+        border-radius: 999px;
         transition: border-color 0.15s;
       }
 
-      .sidebar-search input::placeholder {
+      .sidebar-search-box:focus-within {
+        border-color: var(--yellow);
+      }
+
+      .sidebar-search-icon {
+        font-size: 14px;
+        opacity: 0.7;
+        flex-shrink: 0;
+      }
+
+      .sidebar-search-box input {
+        flex: 1;
+        min-width: 0;
+        border: none;
+        background: transparent;
+        color: var(--text);
+        font-size: 14px;
+        font-family: var(--font-body);
+      }
+
+      .sidebar-search-box input::placeholder {
         color: var(--text-muted);
       }
 
-      .sidebar-search input:focus {
+      .sidebar-search-box input:focus {
         outline: none;
-        border-color: var(--yellow);
       }
 
       .search-results {
@@ -306,8 +350,8 @@
       .conversation-item {
         display: flex;
         align-items: center;
-        gap: 12px;
-        padding: 12px 16px;
+        gap: 14px;
+        padding: 10px 16px;
         cursor: pointer;
         border-radius: 10px;
         margin: 0 6px;
@@ -337,6 +381,12 @@
         flex-shrink: 0;
       }
 
+      .conversation-item .avatar {
+        width: 50px;
+        height: 50px;
+        font-size: 18px;
+      }
+
       .conversation-list {
         flex: 1;
         overflow-y: auto;
@@ -347,20 +397,58 @@
       .conversation-info {
         min-width: 0;
         flex: 1;
+        border-bottom: 1px solid var(--border);
+        padding-bottom: 10px;
+      }
+
+      .conversation-item:last-child .conversation-info {
+        border-bottom: none;
+      }
+
+      .conversation-info-top {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 8px;
+        margin-bottom: 3px;
       }
 
       .conversation-name {
-        font-size: 15px;
+        font-size: 15.5px;
         font-weight: 600;
         color: var(--text);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        min-width: 0;
+      }
+
+      .conversation-time {
+        font-size: 12px;
+        color: var(--text-muted);
+        flex-shrink: 0;
       }
 
       .conversation-preview {
+        display: flex;
+        align-items: center;
+        gap: 4px;
         font-size: 13px;
         color: var(--text-muted);
         white-space: nowrap;
         overflow: hidden;
+      }
+
+      .conversation-tick {
+        color: var(--yellow);
+        font-size: 12px;
+        flex-shrink: 0;
+      }
+
+      .conversation-preview-text {
+        overflow: hidden;
         text-overflow: ellipsis;
+        white-space: nowrap;
       }
 
       .empty-list {
@@ -536,63 +624,82 @@
         background: var(--yellow-deep);
       }
 
-      /* ---------- Bottom nav (pill mengambang, gaya kontrol video call) ---------- */
+      /* ---------- Bottom nav (bar penuh, gaya tab WhatsApp) ---------- */
       .bottom-nav {
         display: flex;
         justify-content: center;
-        align-items: center;
+        align-items: stretch;
         flex-shrink: 0;
-        background: transparent;
-        padding: 14px 16px calc(14px + env(safe-area-inset-bottom, 0px));
+        background: var(--surface);
+        border-top: 1px solid var(--border);
+        padding: 6px 6px calc(6px + env(safe-area-inset-bottom, 0px));
       }
 
       .bottom-nav-inner {
         display: flex;
-        align-items: center;
-        gap: 10px;
-        padding: 8px;
-        border-radius: 999px;
-        background: rgba(20, 20, 22, 0.7);
-        border: 1px solid rgba(255, 212, 0, 0.15);
-        backdrop-filter: blur(10px);
-        -webkit-backdrop-filter: blur(10px);
-        box-shadow: 0 6px 24px rgba(0, 0, 0, 0.4);
+        align-items: stretch;
+        width: 100%;
+        max-width: 520px;
+        margin: 0 auto;
       }
 
       .bottom-nav-item {
+        flex: 1;
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        gap: 0;
-        width: 48px;
-        height: 48px;
-        border-radius: 50%;
-        background: rgba(255, 255, 255, 0.08);
+        gap: 3px;
+        padding: 6px 4px 4px;
+        background: transparent;
         border: none;
         cursor: pointer;
-        color: #ffffff;
-        transition: background 0.15s, color 0.15s, box-shadow 0.15s;
-        flex-shrink: 0;
+        color: var(--text-muted);
+        transition: color 0.15s;
       }
 
       .bottom-nav-item:hover {
-        background: rgba(255, 255, 255, 0.16);
+        color: var(--text);
       }
 
       .bottom-nav-item.active {
-        background: var(--yellow);
-        color: #0b0b0c;
-        box-shadow: 0 0 0 3px rgba(255, 212, 0, 0.22);
+        color: var(--yellow);
+      }
+
+      .bottom-nav-icon-wrap {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
       }
 
       .bottom-nav-icon {
-        font-size: 20px;
+        font-size: 21px;
         line-height: 1;
       }
 
+      .bottom-nav-badge {
+        position: absolute;
+        top: -6px;
+        right: -12px;
+        min-width: 17px;
+        height: 17px;
+        padding: 0 4px;
+        border-radius: 999px;
+        background: var(--yellow);
+        color: #0b0b0c;
+        font-size: 10.5px;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
       .bottom-nav-label {
-        display: none;
+        display: block;
+        font-size: 11px;
+        font-weight: 600;
+        line-height: 1;
       }
 
       /* ---------- Placeholder tabs (Update / Panggilan) ---------- */
