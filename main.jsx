@@ -297,7 +297,7 @@ function Sidebar({ currentUser, selectedConversation, onSelectConversation }) {
 /* ============================================================
    ChatWindow
    ============================================================ */
-function ChatWindow({ currentUser, conversation }) {
+function ChatWindow({ currentUser, conversation, onBack }) {
   const [messages, setMessages] = useState([])
   const [text, setText] = useState('')
   const bottomRef = useRef(null)
@@ -374,6 +374,9 @@ function ChatWindow({ currentUser, conversation }) {
   return (
     <div className="chat-window">
       <div className="chat-header">
+        <button className="chat-back" onClick={onBack} aria-label="Kembali">
+          ←
+        </button>
         <div className="avatar">{conversation.other.username[0].toUpperCase()}</div>
         <div className="chat-header-name">@{conversation.other.username}</div>
       </div>
@@ -473,12 +476,11 @@ function App() {
               selectedConversation={selectedConversation}
               onSelectConversation={setSelectedConversation}
             />
-            <ChatWindow currentUser={user} conversation={selectedConversation} />
-            {selectedConversation && (
-              <button className="mobile-back" onClick={() => setSelectedConversation(null)}>
-                ← Kembali
-              </button>
-            )}
+            <ChatWindow
+              currentUser={user}
+              conversation={selectedConversation}
+              onBack={() => setSelectedConversation(null)}
+            />
           </>
         )}
 
