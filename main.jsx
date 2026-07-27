@@ -45,75 +45,250 @@ function Icon({ name, filled, className = '', style }) {
 }
 
 /* ============================================================
-   Login
+   PIN ala BBM: 8 karakter acak (angka + huruf), huruf/angka yang
+   gampang ketuker (0/O, 1/I) sengaja tidak dipakai.
    ============================================================ */
-function Login({ onLogin }) {
+function generatePin() {
+  const chars = '23456789ABCDEFGHJKLMNPQRSTUVWXYZ'
+  let pin = ''
+  for (let i = 0; i < 8; i++) {
+    pin += chars[Math.floor(Math.random() * chars.length)]
+  }
+  return pin
+}
+
+/* ============================================================
+   Auth (Login / Daftar akun + reveal PIN)
+   ============================================================ */
+function Auth({ onLogin }) {
+  const [mode, setMode] = useState('login') // 'login' | 'register'
   const [username, setUsername] = useState('')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+  const [pinReveal, setPinReveal] = useState(null) // { pin, needsConfirmation }
 
-  async function handleSubmit(e) {
+  function switchMode(next) {
+    setMode(next)
+    setError('')
+  }
+
+  async function handleLogin(e) {
     e.preventDefault()
-    const clean = username.trim().toLowerCase()
-    if (!clean) return
     setLoading(true)
     setError('')
-
     try {
-      const { data: existing, error: fetchError } = await supabase
+      const { data, error: signInError } = await supabase.auth.signInWithPassword({
+        email: email.trim().toLowerCase(),
+        password,
+      })
+      if (signInError) throw signInError
+
+      const { data: profile, error: profileError } = await supabase
         .from('users')
-        .select('id, username')
-        .eq('username', clean)
-        .maybeSingle()
+        .select('id, username, email, pin')
+        .eq('id', data.user.id)
+        .single()
+      if (profileError) throw profileError
 
-      if (fetchError) throw fetchError
-
-      let user = existing
-
-      if (!user) {
-        const { data: created, error: insertError } = await supabase
-          .from('users')
-          .insert({ username: clean })
-          .select('id, username')
-          .single()
-
-        if (insertError) throw insertError
-        user = created
-      }
-
-      localStorage.setItem('wa_chat_user', JSON.stringify(user))
-      onLogin(user)
+      onLogin(profile)
     } catch (err) {
       console.error(err)
-      setError('Gagal masuk. Coba periksa koneksi Supabase kamu.')
+      setError('Email atau password salah.')
     } finally {
       setLoading(false)
     }
   }
 
+  async function handleRegister(e) {
+    e.preventDefault()
+    const cleanUsername = username.trim().toLowerCase()
+    const cleanEmail = email.trim().toLowerCase()
+    if (!cleanUsername || !cleanEmail || !password) return
+    setLoading(true)
+    setError('')
+
+    try {
+      const { data: existingUsername } = await supabase
+        .from('users')
+        .select('id')
+        .eq('username', cleanUsername)
+        .maybeSingle()
+
+      if (existingUsername) {
+        setError('Username sudah dipakai, coba yang lain.')
+        setLoading(false)
+        return
+      }
+
+      const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
+        email: cleanEmail,
+        password,
+      })
+      if (signUpError) throw signUpError
+
+      const authUser = signUpData.user
+      if (!authUser) throw new Error('Pendaftaran gagal, coba lagi.')
+
+      // Generate PIN unik, retry kalau tabrakan (unique violation kode 23505)
+      let profile = null
+      let lastError = null
+      for (let attempt = 0; attempt < 5 && !profile; attempt++) {
+        const pin = generatePin()
+        const { data: created, error: insertError } = await supabase
+          .from('users')
+          .insert({ id: authUser.id, username: cleanUsername, email: cleanEmail, pin })
+          .select('id, username, email, pin')
+          .single()
+
+        if (!insertError) {
+          profile = created
+        } else if (insertError.code !== '23505') {
+          throw insertError
+        } else {
+          lastError = insertError
+        }
+      }
+      if (!profile) throw lastError || new Error('Gagal membuat PIN, coba lagi.')
+
+      setPinReveal({ profile, needsConfirmation: !signUpData.session })
+    } catch (err) {
+      console.error(err)
+      const msg = err?.message?.toLowerCase().includes('already registered')
+        ? 'Email sudah terdaftar. Coba login.'
+        : 'Gagal daftar akun. Coba lagi.'
+      setError(msg)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  function copyPin(pin) {
+    navigator.clipboard?.writeText(pin).catch(() => {})
+  }
+
+  if (pinReveal) {
+    return (
+      <div className="login-screen">
+        <div className="login-card pin-reveal-card">
+          <div className="login-logo">
+            <Icon name="key" filled />
+          </div>
+          <h1>Akun berhasil dibuat!</h1>
+          <p>
+            Ini PIN kamu, seperti BBM — bagikan ke teman supaya mereka bisa nambahin kamu
+            langsung tanpa cari username.
+          </p>
+          <div className="pin-display">
+            {pinReveal.profile.pin.split('').map((c, i) => (
+              <span key={i} className="pin-char">
+                {c}
+              </span>
+            ))}
+          </div>
+          <button
+            type="button"
+            className="pin-copy-btn ripple"
+            onPointerDown={addRipple}
+            onClick={() => copyPin(pinReveal.profile.pin)}
+          >
+            <Icon name="content_copy" /> Salin PIN
+          </button>
+
+          {pinReveal.needsConfirmation ? (
+            <>
+              <p className="pin-note">
+                Cek email <strong>{pinReveal.profile.email}</strong> untuk konfirmasi akun dulu,
+                baru bisa login. PIN kamu sudah tersimpan, aman.
+              </p>
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault()
+                  switchMode('login')
+                  setPinReveal(null)
+                }}
+              >
+                <button type="submit" className="ripple" onPointerDown={addRipple}>
+                  Ke halaman login
+                </button>
+              </form>
+            </>
+          ) : (
+            <form
+              onSubmit={(e) => {
+                e.preventDefault()
+                onLogin(pinReveal.profile)
+              }}
+            >
+              <button type="submit" className="ripple" onPointerDown={addRipple}>
+                Lanjut ke ChatKu
+              </button>
+            </form>
+          )}
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className="login-screen">
-      <div className="status-bar-spacer" style={{ position: 'absolute', top: 0, left: 0, right: 0, background: 'transparent' }} />
+      <div
+        className="status-bar-spacer"
+        style={{ position: 'absolute', top: 0, left: 0, right: 0, background: 'transparent' }}
+      />
       <div className="login-card">
         <div className="login-logo">
           <Icon name="forum" filled />
         </div>
         <h1>ChatKu</h1>
-        <p>Masukkan username untuk mulai chatting</p>
-        <form onSubmit={handleSubmit}>
+        <p>{mode === 'login' ? 'Masuk untuk mulai chatting' : 'Buat akun baru untuk mulai chatting'}</p>
+
+        <div className="auth-tabs">
+          <span className="auth-tabs-indicator" style={{ transform: `translateX(${mode === 'login' ? 0 : 100}%)` }} />
+          <button type="button" className={mode === 'login' ? 'active' : ''} onClick={() => switchMode('login')}>
+            Masuk
+          </button>
+          <button type="button" className={mode === 'register' ? 'active' : ''} onClick={() => switchMode('register')}>
+            Daftar
+          </button>
+        </div>
+
+        <form onSubmit={mode === 'login' ? handleLogin : handleRegister}>
+          {mode === 'register' && (
+            <div className="field">
+              <Icon name="person" />
+              <input
+                type="text"
+                placeholder="Username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                autoFocus
+              />
+            </div>
+          )}
           <div className="field">
-            <Icon name="person" />
+            <Icon name="mail" />
             <input
-              type="text"
-              placeholder="Username kamu"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              autoFocus
+              type="email"
+              placeholder="Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              autoFocus={mode === 'login'}
+            />
+          </div>
+          <div className="field">
+            <Icon name="lock" />
+            <input
+              type="password"
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
             />
           </div>
           <button type="submit" className="ripple" onPointerDown={addRipple} disabled={loading}>
             {loading && <span className="spinner" />}
-            {loading ? 'Memuat...' : 'Masuk'}
+            {loading ? 'Memuat...' : mode === 'login' ? 'Masuk' : 'Daftar'}
           </button>
         </form>
       </div>
@@ -209,6 +384,7 @@ function BottomNav({ tabs, activeTab, onChange, hideOnMobile, badges }) {
 function Sidebar({ currentUser, selectedConversation, onSelectConversation, onConversationsChange }) {
   const [conversations, setConversations] = useState([])
   const [search, setSearch] = useState('')
+  const [searchMode, setSearchMode] = useState('username') // 'username' | 'pin'
   const [results, setResults] = useState([])
   const [searching, setSearching] = useState(false)
   const [loadingList, setLoadingList] = useState(true)
@@ -282,24 +458,23 @@ function Sidebar({ currentUser, selectedConversation, onSelectConversation, onCo
   }, [loadConversations])
 
   useEffect(() => {
-    const clean = search.trim().toLowerCase()
+    const clean = search.trim()
     if (!clean) {
       setResults([])
       return
     }
     setSearching(true)
     const timeout = setTimeout(async () => {
-      const { data } = await supabase
-        .from('users')
-        .select('id, username')
-        .ilike('username', `%${clean}%`)
-        .neq('id', currentUser.id)
-        .limit(6)
+      const query = supabase.from('users').select('id, username, pin').neq('id', currentUser.id).limit(6)
+      const { data } =
+        searchMode === 'pin'
+          ? await query.ilike('pin', `%${clean.toUpperCase()}%`)
+          : await query.ilike('username', `%${clean.toLowerCase()}%`)
       setResults(data || [])
       setSearching(false)
     }, 300)
     return () => clearTimeout(timeout)
-  }, [search, currentUser.id])
+  }, [search, searchMode, currentUser.id])
 
   async function startConversation(otherUser) {
     const { data: existing } = await supabase
@@ -347,12 +522,28 @@ function Sidebar({ currentUser, selectedConversation, onSelectConversation, onCo
   return (
     <aside className="sidebar">
       <div className="sidebar-search">
+        <div className="search-mode-tabs">
+          <button
+            type="button"
+            className={searchMode === 'username' ? 'active' : ''}
+            onClick={() => setSearchMode('username')}
+          >
+            Username
+          </button>
+          <button
+            type="button"
+            className={searchMode === 'pin' ? 'active' : ''}
+            onClick={() => setSearchMode('pin')}
+          >
+            Tambah pakai PIN
+          </button>
+        </div>
         <div className="sidebar-search-box">
           <Icon name="search" className="sidebar-search-icon" />
           <input
             ref={searchInputRef}
             type="text"
-            placeholder="Cari atau mulai chat baru"
+            placeholder={searchMode === 'pin' ? 'Masukkan PIN teman (8 karakter)' : 'Cari atau mulai chat baru'}
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
@@ -375,7 +566,10 @@ function Sidebar({ currentUser, selectedConversation, onSelectConversation, onCo
               onClick={() => startConversation(u)}
             >
               <div className="avatar">{u.username[0].toUpperCase()}</div>
-              <div>@{u.username}</div>
+              <div>
+                <div>@{u.username}</div>
+                <div className="result-pin">PIN {u.pin}</div>
+              </div>
             </div>
           ))}
         </div>
@@ -580,21 +774,42 @@ function App() {
   const [ready, setReady] = useState(false)
   const [activeTab, setActiveTab] = useState('chats')
   const [conversationCount, setConversationCount] = useState(0)
+  const [pinCopied, setPinCopied] = useState(false)
 
   useEffect(() => {
-    const saved = localStorage.getItem('wa_chat_user')
-    if (saved) {
-      try {
-        setUser(JSON.parse(saved))
-      } catch {
-        localStorage.removeItem('wa_chat_user')
+    let active = true
+
+    async function loadSessionProfile(session) {
+      if (!session) {
+        if (active) setUser(null)
+        return
       }
+      const { data: profile, error } = await supabase
+        .from('users')
+        .select('id, username, email, pin')
+        .eq('id', session.user.id)
+        .single()
+      if (active) setUser(error ? null : profile)
     }
-    setReady(true)
+
+    supabase.auth.getSession().then(({ data }) => {
+      loadSessionProfile(data.session).finally(() => {
+        if (active) setReady(true)
+      })
+    })
+
+    const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
+      loadSessionProfile(session)
+    })
+
+    return () => {
+      active = false
+      listener.subscription.unsubscribe()
+    }
   }, [])
 
-  function handleLogout() {
-    localStorage.removeItem('wa_chat_user')
+  async function handleLogout() {
+    await supabase.auth.signOut()
     setUser(null)
     setSelectedConversation(null)
   }
@@ -609,7 +824,7 @@ function App() {
   if (!ready) return null
 
   if (!user) {
-    return <Login onLogin={setUser} />
+    return <Auth onLogin={setUser} />
   }
 
   const activeTabInfo = TABS.find((t) => t.id === activeTab)
@@ -660,6 +875,33 @@ function App() {
           <div className="settings-screen screen-enter">
             <div className="settings-avatar">{user.username[0].toUpperCase()}</div>
             <div className="settings-username">@{user.username}</div>
+
+            <div className="settings-card">
+              <div className="settings-row">
+                <Icon name="mail" />
+                <span>{user.email}</span>
+              </div>
+              <div className="settings-row settings-pin-row">
+                <Icon name="key" />
+                <div className="settings-pin-info">
+                  <span className="settings-pin-label">PIN kamu</span>
+                  <span className="settings-pin-value">{user.pin}</span>
+                </div>
+                <button
+                  className="settings-pin-copy ripple"
+                  onPointerDown={addRipple}
+                  onClick={() => {
+                    navigator.clipboard?.writeText(user.pin).catch(() => {})
+                    setPinCopied(true)
+                    setTimeout(() => setPinCopied(false), 1600)
+                  }}
+                  aria-label="Salin PIN"
+                >
+                  <Icon name={pinCopied ? 'check' : 'content_copy'} />
+                </button>
+              </div>
+            </div>
+
             <button className="settings-logout ripple" onPointerDown={addRipple} onClick={handleLogout}>
               <Icon name="logout" />
               Keluar
