@@ -15,6 +15,51 @@ app.use(express.static(path.join(__dirname)));
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY);
 
 /* ============================================================
+   TELEGRAM BOT — Kirim notif verifikasi KTP
+   ============================================================ */
+async function kirimTelegramKTP({ nama, nik, email, ktpFotoUrl, userId }) {
+  const token = process.env.TELEGRAM_BOT_TOKEN;
+  const chatId = process.env.TELEGRAM_CHAT_ID;
+  if (!token || !chatId) return;
+
+  const teks =
+    '🆔 *Pengajuan Verifikasi KTP Baru*
+
+' +
+    '👤 *Nama:* ' + nama + '
+' +
+    '🪪 *NIK:* ' + nik + '
+' +
+    '📧 *Email:* ' + email + '
+' +
+    '🔑 *User ID:* ' + userId + '
+' +
+    '🕐 *Waktu:* ' + new Date().toLocaleString('id-ID', { timeZone: 'Asia/Jakarta' }) + '
+
+' +
+    'Silakan cek panel admin untuk memverifikasi.';
+
+  try {
+    if (ktpFotoUrl) {
+      await fetch('https://api.telegram.org/bot' + token + '/sendPhoto', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ chat_id: chatId, photo: ktpFotoUrl, caption: teks, parse_mode: 'Markdown' })
+      });
+    } else {
+      await fetch('https://api.telegram.org/bot' + token + '/sendMessage', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ chat_id: chatId, text: teks, parse_mode: 'Markdown' })
+      });
+    }
+  } catch (e) {
+    console.error('Telegram notif error:', e.message);
+  }
+}
+
+
+/* ============================================================
    MIDDLEWARE: Verifikasi Token User
    ============================================================ */
 function verifyToken(req, res, next) {
@@ -185,10 +230,10 @@ app.post('/api/verifikasi/ajukan', verifyToken, async (req, res) => {
     return res.status(400).json({ message: 'Foto KTP wajib diupload untuk mengajukan verifikasi.' });
   }
 
-  // Cek status verifikasi sekarang
+  // Ambil data user lengkap untuk notif Telegram
   const { data: user } = await supabase
     .from('users')
-    .select('verifikasi_status')
+    .select('verifikasi_status, nama_lengkap, nik_ktp, email')
     .eq('id', req.user.id).single();
 
   if (!user) return res.status(404).json({ message: 'User tidak ditemukan.' });
@@ -229,6 +274,16 @@ app.post('/api/verifikasi/ajukan', verifyToken, async (req, res) => {
     .eq('id', req.user.id);
 
   if (error) return res.status(500).json({ message: 'Gagal mengajukan verifikasi.', error: error.message });
+
+  // Kirim notif + foto KTP ke Telegram
+  kirimTelegramKTP({
+    nama: user.nama_lengkap || '-',
+    nik: user.nik_ktp || '-',
+    email: user.email || '-',
+    ktpFotoUrl,
+    userId: req.user.id
+  });
+
   res.json({ message: 'Pengajuan verifikasi berhasil dikirim. Menunggu persetujuan admin.' });
 });
 
