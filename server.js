@@ -22,35 +22,31 @@ async function kirimTelegramKTP({ nama, nik, email, ktpFotoUrl, userId }) {
   const chatId = process.env.TELEGRAM_CHAT_ID;
   if (!token || !chatId) return;
 
-  const teks =
-    '🆔 *Pengajuan Verifikasi KTP Baru*
-
-' +
-    '👤 *Nama:* ' + nama + '
-' +
-    '🪪 *NIK:* ' + nik + '
-' +
-    '📧 *Email:* ' + email + '
-' +
-    '🔑 *User ID:* ' + userId + '
-' +
-    '🕐 *Waktu:* ' + new Date().toLocaleString('id-ID', { timeZone: 'Asia/Jakarta' }) + '
-
-' +
-    'Silakan cek panel admin untuk memverifikasi.';
+  const waktu = new Date().toLocaleString('id-ID', { timeZone: 'Asia/Jakarta' });
+  const teks = [
+    '[KTP] Pengajuan Verifikasi KTP Baru',
+    '',
+    'Nama    : ' + nama,
+    'NIK     : ' + nik,
+    'Email   : ' + email,
+    'User ID : ' + userId,
+    'Waktu   : ' + waktu,
+    '',
+    'Cek panel admin untuk memverifikasi.'
+  ].join('\n');
 
   try {
     if (ktpFotoUrl) {
       await fetch('https://api.telegram.org/bot' + token + '/sendPhoto', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ chat_id: chatId, photo: ktpFotoUrl, caption: teks, parse_mode: 'Markdown' })
+        body: JSON.stringify({ chat_id: chatId, photo: ktpFotoUrl, caption: teks })
       });
     } else {
       await fetch('https://api.telegram.org/bot' + token + '/sendMessage', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ chat_id: chatId, text: teks, parse_mode: 'Markdown' })
+        body: JSON.stringify({ chat_id: chatId, text: teks })
       });
     }
   } catch (e) {
