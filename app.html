@@ -517,14 +517,19 @@
       Aktivitas
     </button>
 
-    <!-- Tarik (FAB center) -->
+    <!-- Dompet / Tarik (FAB center) -->
     <button class="nav-item topup" data-view="topup" onclick="showView('topup')">
       <span class="nav-icon">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M12 5v14M5 12l7 7 7-7"/>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <!-- Badan dompet -->
+          <rect x="2" y="6" width="20" height="14" rx="3" ry="3"/>
+          <!-- Flap/tutup atas -->
+          <path d="M2 10h20"/>
+          <!-- Koin slot kanan -->
+          <circle cx="17" cy="15" r="1.5" fill="currentColor" stroke="none"/>
         </svg>
       </span>
-      Tarik
+      Dompet
     </button>
 
     <!-- Notifikasi -->
