@@ -1,0 +1,1384 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- Mencegah indexing oleh search engine -->
+<meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
+<meta name="googlebot" content="noindex, nofollow">
+<title>404 Not Found</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,500;8..60,600;8..60,700&family=Public+Sans:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body class="admin-body">
+
+<a href="#mainContent" class="skip-link">Langsung ke konten utama</a>
+
+<!-- ===== DASHBOARD UTAMA ===== -->
+<div id="adminDashboard">
+
+  <div class="admin-overlay-bg" id="sidebarOverlay" onclick="closeSidebar()"></div>
+
+  <!-- Sidebar -->
+  <aside class="admin-sidebar" id="adminSidebar">
+    <div class="sidebar-brand">
+      <div class="brand-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="2" y="5" width="20" height="14" rx="2"/>
+          <line x1="2" y1="10" x2="22" y2="10"/>
+        </svg>
+      </div>
+      <div class="sidebar-brand-text">
+        <h2>DPO Admin</h2>
+        <p>Panel Pengelola Pinjaman</p>
+      </div>
+    </div>
+    <nav class="sidebar-nav" aria-label="Navigasi utama">
+      <div class="sidebar-nav-label">Menu Utama</div>
+      <button type="button" class="active" id="nav-dashboard" onclick="showSection('dashboard')" aria-current="page">
+        <span class="nav-icon" aria-hidden="true">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
+            <rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
+          </svg>
+        </span>
+        Dashboard
+      </button>
+      <button type="button" id="nav-semua" onclick="showSection('users','semua')">
+        <span class="nav-icon" aria-hidden="true">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/>
+            <circle cx="9" cy="7" r="4"/>
+            <path d="M23 21v-2a4 4 0 00-3-3.87"/>
+            <path d="M16 3.13a4 4 0 010 7.75"/>
+          </svg>
+        </span>
+        Semua Nasabah
+      </button>
+      <button type="button" id="nav-menunggu" onclick="showSection('users','menunggu')">
+        <span class="nav-icon" aria-hidden="true">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/>
+            <polyline points="12,6 12,12 16,14"/>
+          </svg>
+        </span>
+        Menunggu Verifikasi
+        <span class="admin-badge" id="badgePending" style="margin-left:auto;display:none;font-size:10px;padding:2px 7px;"></span>
+      </button>
+      <button type="button" id="nav-terverifikasi" onclick="showSection('users','terverifikasi')">
+        <span class="nav-icon" aria-hidden="true">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 11.08V12a10 10 0 11-5.93-9.14"/>
+            <polyline points="22,4 12,14.01 9,11.01"/>
+          </svg>
+        </span>
+        Terverifikasi
+      </button>
+      <button type="button" id="nav-ditolak" onclick="showSection('users','ditolak')">
+        <span class="nav-icon" aria-hidden="true">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/>
+            <line x1="15" y1="9" x2="9" y2="15"/>
+            <line x1="9" y1="9" x2="15" y2="15"/>
+          </svg>
+        </span>
+        Ditolak
+      </button>
+      <div class="sidebar-nav-label" style="margin-top:14px;">Komunikasi</div>
+      <button type="button" id="nav-notifikasi" onclick="showSection('notifikasi')">
+        <span class="nav-icon" aria-hidden="true">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+            <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+          </svg>
+        </span>
+        Kirim Notifikasi
+      </button>
+      <div class="sidebar-nav-label" style="margin-top:14px;">Transaksi</div>
+      <button type="button" id="nav-penarikan" onclick="showSection('penarikan')">
+        <span class="nav-icon" aria-hidden="true">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="12" y1="5" x2="12" y2="19"/><polyline points="19,12 12,19 5,12"/>
+          </svg>
+        </span>
+        Pencairan Dana
+        <span class="admin-badge" id="badgePenarikan" style="margin-left:auto;display:none;font-size:10px;padding:2px 7px;"></span>
+      </button>
+    </nav>
+    <div class="sidebar-footer">
+      <button class="admin-logout-btn" onclick="adminLogout()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/>
+          <polyline points="16,17 21,12 16,7"/>
+          <line x1="21" y1="12" x2="9" y2="12"/>
+        </svg>
+        Keluar
+      </button>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="admin-main" id="mainContent">
+    <header class="admin-topbar">
+      <div class="admin-topbar-left">
+        <button class="admin-hamburger" id="hamburgerBtn" onclick="toggleSidebar()" aria-label="Buka menu navigasi" aria-expanded="false" aria-controls="adminSidebar">
+          <span></span><span></span><span></span>
+        </button>
+        <h1 id="topbarTitle">Dashboard</h1>
+      </div>
+      <div class="admin-topbar-right">
+        <span class="admin-badge">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          Admin
+        </span>
+      </div>
+    </header>
+
+    <div class="admin-content">
+
+      <!-- ===== SECTION: DASHBOARD ===== -->
+      <div id="section-dashboard">
+        <div class="stats-grid" id="statsGrid">
+          <div class="stat-card">
+            <div class="stat-icon blue">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+            </div>
+            <div class="stat-info"><div class="stat-label">Total Nasabah</div><div class="stat-value" id="statTotal">—</div></div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon orange">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12,6 12,12 16,14"/></svg>
+            </div>
+            <div class="stat-info"><div class="stat-label">Menunggu Verif</div><div class="stat-value" id="statMenunggu">—</div><div class="stat-sub">Perlu ditinjau</div></div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon green">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22,4 12,14.01 9,11.01"/></svg>
+            </div>
+            <div class="stat-info"><div class="stat-label">Terverifikasi</div><div class="stat-value" id="statTerverifikasi">—</div></div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon red">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+            </div>
+            <div class="stat-info"><div class="stat-label">Ditolak</div><div class="stat-value" id="statDitolak">—</div></div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon purple">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+            </div>
+            <div class="stat-info"><div class="stat-label">Total Penarikan</div><div class="stat-value" id="statPenarikan">—</div></div>
+          </div>
+          <div class="stat-card" style="cursor:pointer;" onclick="showSection('penarikan')">
+            <div class="stat-icon orange">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19,12 12,19 5,12"/></svg>
+            </div>
+            <div class="stat-info"><div class="stat-label">Penarikan Pending</div><div class="stat-value" id="statPendingPenarikan">—</div><div class="stat-sub">Perlu disetujui</div></div>
+          </div>
+        </div>
+
+        <!-- Quick shortcut: pending verifications -->
+        <div id="quickPendingSection" style="display:none;">
+          <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:12px;">
+            <h3 style="font-family:'Source Serif 4',serif; font-size:16px; font-weight:600; color:#0a1930;">Perlu Ditinjau</h3>
+            <button onclick="showSection('users','menunggu')" style="font-size:12px; color:#a9781e; background:none; border:none; cursor:pointer; font-weight:700; font-family:inherit;">Lihat Semua →</button>
+          </div>
+          <div id="quickPendingList"></div>
+        </div>
+      </div>
+
+      <!-- ===== SECTION: USERS TABLE ===== -->
+      <div id="section-users" style="display:none;">
+        <div class="filter-bar">
+          <div class="filter-search">
+            <span>🔍</span>
+            <input type="text" id="searchInput" placeholder="Cari nama, NIK, atau email..." oninput="debounceSearch()">
+          </div>
+          <div class="filter-tabs" id="filterTabs">
+            <button class="filter-tab active" data-status="semua" onclick="setFilterStatus('semua')">Semua</button>
+            <button class="filter-tab" data-status="menunggu" onclick="setFilterStatus('menunggu')">Menunggu</button>
+            <button class="filter-tab" data-status="terverifikasi" onclick="setFilterStatus('terverifikasi')">Terverifikasi</button>
+            <button class="filter-tab" data-status="ditolak" onclick="setFilterStatus('ditolak')">Ditolak</button>
+            <button class="filter-tab" data-status="belum_verifikasi" onclick="setFilterStatus('belum_verifikasi')">— Belum</button>
+          </div>
+        </div>
+
+        <div class="users-table-card">
+          <div class="table-header">
+            <h3>Daftar Pengguna</h3>
+            <span class="table-count" id="tableCount">0 pengguna</span>
+          </div>
+          <div id="tableBody">
+            <div class="table-loading">Memuat data...</div>
+          </div>
+          <div class="pagination" id="pagination" style="display:none;">
+            <span class="pagination-info" id="paginationInfo"></span>
+            <div class="pagination-btns">
+              <button class="page-btn" id="prevBtn" onclick="changePage(-1)">← Sebelumnya</button>
+              <button class="page-btn" id="nextBtn" onclick="changePage(1)">Selanjutnya →</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== SECTION: PENARIKAN ===== -->
+      <div id="section-penarikan" style="display:none;">
+        <div class="filter-bar">
+          <div class="filter-tabs" id="filterPenarikanTabs">
+            <button class="filter-tab active" data-pstatus="pending" onclick="setFilterPenarikan('pending')">⏳ Menunggu</button>
+            <button class="filter-tab" data-pstatus="approved" onclick="setFilterPenarikan('approved')">✓ Disetujui</button>
+            <button class="filter-tab" data-pstatus="rejected" onclick="setFilterPenarikan('rejected')">✕ Ditolak</button>
+            <button class="filter-tab" data-pstatus="semua" onclick="setFilterPenarikan('semua')">Semua</button>
+          </div>
+        </div>
+
+        <div class="users-table-card">
+          <div class="table-header">
+            <h3>Daftar Penarikan</h3>
+            <span class="table-count" id="penarikanCount">0 transaksi</span>
+          </div>
+          <div id="penarikanBody">
+            <div class="table-loading">Memuat data...</div>
+          </div>
+          <div class="pagination" id="penarikanPagination" style="display:none;">
+            <span class="pagination-info" id="penarikanPaginationInfo"></span>
+            <div class="pagination-btns">
+              <button class="page-btn" id="penarikanPrevBtn" onclick="changePenarikanPage(-1)">← Sebelumnya</button>
+              <button class="page-btn" id="penarikanNextBtn" onclick="changePenarikanPage(1)">Selanjutnya →</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== SECTION: KIRIM NOTIFIKASI ===== -->
+      <div id="section-notifikasi" style="display:none;">
+
+        <!-- Form Kirim Notifikasi -->
+        <div class="users-table-card" style="padding:24px; margin-bottom:20px;">
+          <div class="table-header" style="margin-bottom:20px;">
+            <h3>🔔 Kirim Notifikasi</h3>
+          </div>
+
+          <!-- Tipe penerima -->
+          <div style="margin-bottom:16px;">
+            <label style="font-size:12px; font-weight:700; color:#475569; display:block; margin-bottom:8px; text-transform:uppercase; letter-spacing:0.5px;">Penerima</label>
+            <div style="display:flex; gap:10px; flex-wrap:wrap;">
+              <label style="display:flex; align-items:center; gap:8px; cursor:pointer; background:#f8fafc; border:1.5px solid #e2e8f0; border-radius:10px; padding:10px 14px; flex:1; min-width:140px; transition:all 0.2s;" id="labelBroadcast">
+                <input type="radio" name="tipePenerima" value="broadcast" onchange="toggleTipePenerima()" checked style="accent-color:#0a1930;">
+                <div>
+                  <div style="font-size:13px; font-weight:700; color:#0f172a;">📢 Semua Nasabah</div>
+                  <div style="font-size:11px; color:#64748b;">Broadcast ke seluruh pengguna</div>
+                </div>
+              </label>
+              <label style="display:flex; align-items:center; gap:8px; cursor:pointer; background:#f8fafc; border:1.5px solid #e2e8f0; border-radius:10px; padding:10px 14px; flex:1; min-width:140px; transition:all 0.2s;" id="labelSpesifik">
+                <input type="radio" name="tipePenerima" value="spesifik" onchange="toggleTipePenerima()" style="accent-color:#0a1930;">
+                <div>
+                  <div style="font-size:13px; font-weight:700; color:#0f172a;">👤 Pengguna Tertentu</div>
+                  <div style="font-size:11px; color:#64748b;">Kirim ke satu pengguna</div>
+                </div>
+              </label>
+            </div>
+          </div>
+
+          <!-- Cari pengguna (muncul jika pilih spesifik) -->
+          <div id="cariPenggunaWrap" style="display:none; margin-bottom:16px;">
+            <label style="font-size:12px; font-weight:700; color:#475569; display:block; margin-bottom:8px; text-transform:uppercase; letter-spacing:0.5px;">Cari Pengguna</label>
+            <div style="position:relative;">
+              <input type="text" id="cariPenggunaInput" placeholder="Ketik nama atau NIK..." oninput="cariPengguna()"
+                style="width:100%; padding:10px 14px; border:1.5px solid #e2e8f0; border-radius:10px; font-size:13px; font-family:inherit; box-sizing:border-box; outline:none;">
+              <div id="cariPenggunaDropdown" style="display:none; position:absolute; top:100%; left:0; right:0; background:#fff; border:1.5px solid #e2e8f0; border-radius:10px; margin-top:4px; max-height:200px; overflow-y:auto; z-index:100; box-shadow:0 8px 24px rgba(0,0,0,0.12);"></div>
+            </div>
+            <div id="penggunaTeripilhBox" style="display:none; margin-top:10px; background:#f0fdf4; border:1.5px solid #86efac; border-radius:10px; padding:10px 14px; display:none; align-items:center; justify-content:space-between;">
+              <div>
+                <div id="penggunaTeripilhNama" style="font-size:13px; font-weight:700; color:#166534;"></div>
+                <div id="penggunaTeripilhNik" style="font-size:11px; color:#15803d; font-family:'IBM Plex Mono',monospace;"></div>
+              </div>
+              <button onclick="hapusPilihanPengguna()" style="background:none; border:none; cursor:pointer; font-size:18px; color:#15803d; padding:0 4px;">✕</button>
+            </div>
+          </div>
+
+          <!-- Judul notifikasi -->
+          <div style="margin-bottom:16px;">
+            <label for="notifJudul" style="font-size:12px; font-weight:700; color:#475569; display:block; margin-bottom:8px; text-transform:uppercase; letter-spacing:0.5px;">Judul Notifikasi</label>
+            <input type="text" id="notifJudul" maxlength="80" placeholder="Contoh: Informasi Penting, Update Saldo..."
+              style="width:100%; padding:10px 14px; border:1.5px solid #e2e8f0; border-radius:10px; font-size:13px; font-family:inherit; box-sizing:border-box; outline:none;">
+          </div>
+
+          <!-- Pesan -->
+          <div style="margin-bottom:16px;">
+            <label for="notifPesan" style="font-size:12px; font-weight:700; color:#475569; display:block; margin-bottom:8px; text-transform:uppercase; letter-spacing:0.5px;">Isi Pesan</label>
+            <textarea id="notifPesan" maxlength="500" rows="4" placeholder="Tulis pesan notifikasi di sini..."
+              style="width:100%; padding:10px 14px; border:1.5px solid #e2e8f0; border-radius:10px; font-size:13px; font-family:inherit; box-sizing:border-box; outline:none; resize:vertical;"></textarea>
+            <div style="text-align:right; font-size:11px; color:#94a3b8; margin-top:4px;"><span id="pesanCount">0</span>/500</div>
+          </div>
+
+          <!-- Tipe ikon -->
+          <div style="margin-bottom:20px;">
+            <label style="font-size:12px; font-weight:700; color:#475569; display:block; margin-bottom:8px; text-transform:uppercase; letter-spacing:0.5px;">Tipe Notifikasi</label>
+            <div style="display:flex; gap:8px; flex-wrap:wrap;">
+              <label style="display:flex; align-items:center; gap:6px; cursor:pointer; background:#f8fafc; border:1.5px solid #e2e8f0; border-radius:8px; padding:8px 12px; font-size:12px; font-weight:600; color:#475569;">
+                <input type="radio" name="tipeNotif" value="info" checked style="accent-color:#0a1930;"> 📢 Informasi
+              </label>
+              <label style="display:flex; align-items:center; gap:6px; cursor:pointer; background:#f8fafc; border:1.5px solid #e2e8f0; border-radius:8px; padding:8px 12px; font-size:12px; font-weight:600; color:#475569;">
+                <input type="radio" name="tipeNotif" value="success" style="accent-color:#0a1930;"> ✅ Sukses
+              </label>
+              <label style="display:flex; align-items:center; gap:6px; cursor:pointer; background:#f8fafc; border:1.5px solid #e2e8f0; border-radius:8px; padding:8px 12px; font-size:12px; font-weight:600; color:#475569;">
+                <input type="radio" name="tipeNotif" value="warning" style="accent-color:#0a1930;"> ⚠️ Peringatan
+              </label>
+              <label style="display:flex; align-items:center; gap:6px; cursor:pointer; background:#f8fafc; border:1.5px solid #e2e8f0; border-radius:8px; padding:8px 12px; font-size:12px; font-weight:600; color:#475569;">
+                <input type="radio" name="tipeNotif" value="promo" style="accent-color:#0a1930;"> 🎁 Promo
+              </label>
+            </div>
+          </div>
+
+          <div id="notifError" style="display:none; background:#fef2f2; border:1.5px solid #fca5a5; border-radius:10px; padding:10px 14px; font-size:12px; color:#dc2626; margin-bottom:14px;"></div>
+
+          <button onclick="kirimNotifikasi()" id="kirimNotifBtn"
+            style="width:100%; padding:13px; background:linear-gradient(135deg,#0a1930,#1e3a5f); color:#fff; border:none; border-radius:12px; font-size:14px; font-weight:700; cursor:pointer; font-family:inherit;">
+            <span id="kirimNotifBtnText">🔔 Kirim Notifikasi</span>
+          </button>
+        </div>
+
+        <!-- Riwayat notifikasi yang sudah dikirim -->
+        <div class="users-table-card" style="padding:0;">
+          <div class="table-header" style="padding:18px 20px 12px;">
+            <h3>Riwayat Terkirim</h3>
+            <button onclick="loadRiwayatNotif()" style="font-size:12px; color:#a9781e; background:none; border:none; cursor:pointer; font-weight:700; font-family:inherit;">↻ Refresh</button>
+          </div>
+          <div id="riwayatNotifBody">
+            <div class="table-loading">Memuat...</div>
+          </div>
+        </div>
+
+      </div><!-- /section-notifikasi -->
+
+    </div><!-- /admin-content -->
+  </main>
+</div><!-- /adminDashboard -->
+
+<!-- ===== MODAL DETAIL USER ===== -->
+<div id="userModalOverlay" class="admin-modal-overlay" style="display:none;" onclick="closeModal(event)">
+  <div class="admin-modal" role="dialog" aria-modal="true" aria-labelledby="userModalTitle" onclick="event.stopPropagation()">
+    <div class="admin-modal-header">
+      <h3 id="userModalTitle">Detail Pengguna</h3>
+      <button class="modal-close-btn" onclick="closeUserModal()" aria-label="Tutup detail pengguna">✕</button>
+    </div>
+    <div class="admin-modal-body" id="userModalBody">
+      <div class="table-loading">Memuat...</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== MODAL DETAIL PENARIKAN ===== -->
+<div id="penarikanModalOverlay" class="admin-modal-overlay" style="display:none;" onclick="closePenarikanModal(event)">
+  <div class="admin-modal" role="dialog" aria-modal="true" aria-labelledby="penarikanModalTitle" onclick="event.stopPropagation()">
+    <div class="admin-modal-header">
+      <h3 id="penarikanModalTitle">Detail Penarikan</h3>
+      <button class="modal-close-btn" onclick="closePenarikanModal()" aria-label="Tutup">✕</button>
+    </div>
+    <div class="admin-modal-body" id="penarikanModalBody">
+      <div class="table-loading">Memuat...</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== ADMIN TOAST ===== -->
+<div class="admin-toast" id="adminToast" role="status" aria-live="polite"></div>
+
+<script>
+  const API = '';
+  let adminToken = localStorage.getItem('adminToken') || '';
+  let currentPage = 0;
+  let currentStatus = 'semua';
+  let currentSearch = '';
+  let totalUsers = 0;
+  const PAGE_LIMIT = 20;
+  let searchTimeout = null;
+
+  /* ============================================================
+     AUTH
+     ============================================================ */
+  window.onload = function() {
+    if (!adminToken) {
+      window.location.href = 'index.html';
+      return;
+    }
+    showDashboard();
+  };
+
+  function showDashboard() {
+    loadStats();
+    showSection('dashboard');
+  }
+
+  /* ============================================================
+     PENARIKAN MANAGEMENT
+     ============================================================ */
+  let currentPenarikanPage = 0;
+  let currentPenarikanStatus = 'pending';
+  let totalPenarikan = 0;
+  const PENARIKAN_LIMIT = 20;
+
+  function setFilterPenarikan(status) {
+    currentPenarikanStatus = status;
+    currentPenarikanPage = 0;
+    document.querySelectorAll('.filter-tab[data-pstatus]').forEach(t => t.classList.remove('active'));
+    const activeTab = document.querySelector(`.filter-tab[data-pstatus="${status}"]`);
+    if (activeTab) activeTab.classList.add('active');
+    loadPenarikan();
+  }
+
+  function changePenarikanPage(delta) {
+    currentPenarikanPage = Math.max(0, currentPenarikanPage + delta);
+    loadPenarikan();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  async function loadPenarikan() {
+    const body = document.getElementById('penarikanBody');
+    body.innerHTML = '<div class="table-loading">Memuat data...</div>';
+
+    const params = new URLSearchParams({
+      limit: PENARIKAN_LIMIT,
+      offset: currentPenarikanPage * PENARIKAN_LIMIT,
+      status: currentPenarikanStatus
+    });
+
+    try {
+      const res = await fetch(`${API}/api/admin/penarikan?${params}`, {
+        headers: { 'Authorization': `Bearer ${adminToken}` }
+      });
+      if (res.status === 401 || res.status === 403) { adminLogout(); return; }
+      const { data, count } = await res.json();
+      totalPenarikan = count || 0;
+      document.getElementById('penarikanCount').textContent = `${totalPenarikan.toLocaleString('id-ID')} transaksi`;
+
+      if (!data || data.length === 0) {
+        body.innerHTML = `
+          <div class="table-empty">
+            <div class="empty-icon">💸</div>
+            <p>Tidak ada data penarikan</p>
+            <span>Belum ada penarikan dengan status ini</span>
+          </div>`;
+        document.getElementById('penarikanPagination').style.display = 'none';
+        return;
+      }
+
+      const rows = data.map(t => {
+        const user = t.users || {};
+        const statusClass = t.status === 'approved' ? 'terverifikasi' : t.status === 'rejected' ? 'ditolak' : 'menunggu';
+        const statusText = t.status === 'approved' ? '✓ Disetujui' : t.status === 'rejected' ? '✕ Ditolak' : '⏳ Menunggu';
+        return `
+          <tr onclick="openPenarikanModal('${t.id}', ${JSON.stringify(t).replace(/"/g,'&quot;')})">
+            <td data-label="Pengguna">
+              <div class="table-name">${escHtml(user.nama_lengkap || '—')}</div>
+              <div class="table-nik">${user.nik_ktp || '—'}</div>
+            </td>
+            <td data-label="Metode/Tujuan" style="font-size:12px;color:#64748b;max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${escHtml(t.keterangan || '—')}</td>
+            <td data-label="Nominal" class="table-saldo">Rp ${(t.nominal || 0).toLocaleString('id-ID')}</td>
+            <td data-label="Status"><span class="status-badge ${statusClass}" style="transform:none;">${statusText}</span></td>
+            <td data-label="Tanggal" style="font-size:11px;color:#94a3b8;">${formatTgl(t.created_at)}</td>
+            <td data-label="" class="table-action-cell">
+              ${t.status === 'pending' ? `<button class="btn-detail" onclick="event.stopPropagation();openPenarikanModal('${t.id}', ${JSON.stringify(t).replace(/"/g,'&quot;')})">Proses</button>` : `<button class="btn-detail" onclick="event.stopPropagation();openPenarikanModal('${t.id}', ${JSON.stringify(t).replace(/"/g,'&quot;')})">Detail</button>`}
+            </td>
+          </tr>`;
+      }).join('');
+
+      body.innerHTML = `
+        <div style="overflow-x:auto;">
+          <table class="users-table">
+            <thead>
+              <tr>
+                <th>Pengguna</th>
+                <th>Metode / Tujuan</th>
+                <th>Nominal</th>
+                <th>Status</th>
+                <th>Tanggal</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>${rows}</tbody>
+          </table>
+        </div>`;
+
+      const pagEl = document.getElementById('penarikanPagination');
+      const totalPages = Math.ceil(totalPenarikan / PENARIKAN_LIMIT);
+      if (totalPages > 1) {
+        pagEl.style.display = 'flex';
+        const start = currentPenarikanPage * PENARIKAN_LIMIT + 1;
+        const end = Math.min((currentPenarikanPage + 1) * PENARIKAN_LIMIT, totalPenarikan);
+        document.getElementById('penarikanPaginationInfo').textContent = `Menampilkan ${start}–${end} dari ${totalPenarikan.toLocaleString('id-ID')}`;
+        document.getElementById('penarikanPrevBtn').disabled = currentPenarikanPage === 0;
+        document.getElementById('penarikanNextBtn').disabled = currentPenarikanPage >= totalPages - 1;
+      } else {
+        pagEl.style.display = 'none';
+      }
+    } catch (e) {
+      body.innerHTML = `<div class="table-empty"><div class="empty-icon">⚠️</div><p>Gagal memuat data</p></div>`;
+    }
+  }
+
+  function openPenarikanModal(id, trxData) {
+    document.getElementById('penarikanModalOverlay').style.display = 'flex';
+    const user = trxData.users || {};
+    const statusClass = trxData.status === 'approved' ? 'terverifikasi' : trxData.status === 'rejected' ? 'ditolak' : 'menunggu';
+    const statusText = trxData.status === 'approved' ? '✓ Disetujui' : trxData.status === 'rejected' ? '✕ Ditolak' : '⏳ Menunggu';
+
+    const actionHTML = trxData.status === 'pending' ? `
+      <div class="verif-action-box" style="margin-top:16px;">
+        <div class="verif-action-title">Tindakan Persetujuan</div>
+        <p style="font-size:12px;color:#64748b;margin-bottom:12px;">Periksa detail penarikan di atas, lalu setujui atau tolak permintaan ini.</p>
+        <textarea class="verif-catatan-input" id="penarikanCatatan" placeholder="Catatan (opsional, wajib diisi jika ditolak)..."></textarea>
+        <div class="verif-action-btns">
+          <button class="btn-approve" onclick="prosesPenarikan('${id}','setujui')">✓ Setujui</button>
+          <button class="btn-reject" onclick="prosesPenarikan('${id}','tolak')">✕ Tolak & Kembalikan Dana</button>
+        </div>
+      </div>` : `
+      <div class="verif-action-box" style="margin-top:16px;background:#f8fafc;">
+        <p style="font-size:13px;color:#64748b;text-align:center;">Transaksi ini sudah diproses.</p>
+      </div>`;
+
+    document.getElementById('penarikanModalBody').innerHTML = `
+      <div class="user-detail-header">
+        <div class="user-detail-avatar">${(user.nama_lengkap || '?')[0].toUpperCase()}</div>
+        <div class="user-detail-info">
+          <h4>${escHtml(user.nama_lengkap || '—')}</h4>
+          <p>${user.nik_ktp || '—'}</p>
+        </div>
+      </div>
+      <div class="detail-section">
+        <div class="detail-section-title">Detail Penarikan</div>
+        <div class="detail-row">
+          <span class="detail-row-label">Nominal</span>
+          <span class="detail-row-value" style="color:#dc2626;font-size:16px;">Rp ${(trxData.nominal || 0).toLocaleString('id-ID')}</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-row-label">Metode / Tujuan</span>
+          <span class="detail-row-value" style="font-family:inherit;font-size:12px;white-space:normal;text-align:right;">${escHtml(trxData.keterangan || '—')}</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-row-label">Sisa Saldo Setelah</span>
+          <span class="detail-row-value">Rp ${(trxData.saldo_sesudah || 0).toLocaleString('id-ID')}</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-row-label">Tanggal Ajuan</span>
+          <span class="detail-row-value">${formatTgl(trxData.created_at)}</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-row-label">Status</span>
+          <span class="status-badge ${statusClass}" style="transform:none;">${statusText}</span>
+        </div>
+      </div>
+      ${actionHTML}`;
+  }
+
+  async function prosesPenarikan(id, aksi) {
+    const catatanEl = document.getElementById('penarikanCatatan');
+    const catatan = catatanEl ? catatanEl.value.trim() : '';
+
+    if (aksi === 'tolak' && !catatan) {
+      showAdminToast('Wajib isi catatan alasan penolakan.', 'error');
+      if (catatanEl) catatanEl.focus();
+      return;
+    }
+
+    try {
+      const res = await fetch(`${API}/api/admin/penarikan/${id}/aksi`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${adminToken}`
+        },
+        body: JSON.stringify({ aksi, catatan })
+      });
+      const data = await res.json();
+
+      if (!res.ok) {
+        showAdminToast(data.message || 'Gagal memproses.', 'error');
+        return;
+      }
+
+      showAdminToast(data.message, 'success');
+      closePenarikanModal();
+      loadStats();
+      if (document.getElementById('section-penarikan').style.display !== 'none') loadPenarikan();
+    } catch (e) {
+      showAdminToast('Tidak bisa terhubung ke server.', 'error');
+    }
+  }
+
+  function closePenarikanModal(e) {
+    if (e && e.target !== document.getElementById('penarikanModalOverlay')) return;
+    document.getElementById('penarikanModalOverlay').style.display = 'none';
+  }
+
+  function adminLogout() {
+    localStorage.removeItem('adminToken');
+    adminToken = '';
+    window.location.href = 'index.html';
+  }
+
+  /* ============================================================
+     NAVIGATION
+     ============================================================ */
+  /* ============================================================
+     NOTIFIKASI ADMIN
+     ============================================================ */
+  let selectedUserId = null;
+  let cariTimeout = null;
+
+  function toggleTipePenerima() {
+    const tipe = document.querySelector('input[name="tipePenerima"]:checked').value;
+    const wrap = document.getElementById('cariPenggunaWrap');
+    wrap.style.display = tipe === 'spesifik' ? 'block' : 'none';
+    if (tipe === 'broadcast') {
+      selectedUserId = null;
+      document.getElementById('cariPenggunaInput').value = '';
+      document.getElementById('penggunaTeripilhBox').style.display = 'none';
+      document.getElementById('cariPenggunaDropdown').style.display = 'none';
+    }
+  }
+
+  function cariPengguna() {
+    clearTimeout(cariTimeout);
+    const q = document.getElementById('cariPenggunaInput').value.trim();
+    const dropdown = document.getElementById('cariPenggunaDropdown');
+    if (q.length < 2) { dropdown.style.display = 'none'; return; }
+    cariTimeout = setTimeout(async () => {
+      try {
+        const res = await fetch(`${API}/api/admin/users?search=${encodeURIComponent(q)}&limit=6`, {
+          headers: { 'Authorization': `Bearer ${adminToken}` }
+        });
+        const { data } = await res.json();
+        if (!data || data.length === 0) {
+          dropdown.innerHTML = '<div style="padding:12px 14px; font-size:12px; color:#94a3b8;">Tidak ada hasil</div>';
+        } else {
+          dropdown.innerHTML = data.map(u => `
+            <div class="user-dropdown-item"
+              data-id="${escHtml(u.id)}"
+              data-nama="${escHtml(u.nama_lengkap)}"
+              data-nik="${escHtml(u.nik_ktp)}"
+              style="padding:10px 14px; cursor:pointer; border-bottom:1px solid #f1f5f9; display:flex; align-items:center; gap:10px;"
+              onmouseover="this.style.background='#f8fafc'" onmouseout="this.style.background='#fff'">
+              <div style="width:32px;height:32px;border-radius:50%;background:#0a1930;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#a9781e;flex-shrink:0;">${escHtml(u.nama_lengkap[0].toUpperCase())}</div>
+              <div>
+                <div style="font-size:13px;font-weight:600;color:#0f172a;">${escHtml(u.nama_lengkap)}</div>
+                <div style="font-size:11px;color:#94a3b8;font-family:'IBM Plex Mono',monospace;">${escHtml(u.nik_ktp)}</div>
+              </div>
+            </div>`).join('');
+
+          // Pasang event listener via JS — aman dari karakter kutip di nama
+          dropdown.querySelectorAll('.user-dropdown-item').forEach(el => {
+            el.addEventListener('click', () => {
+              pilihPengguna(el.dataset.id, el.dataset.nama, el.dataset.nik);
+            });
+          });
+        }
+        dropdown.style.display = 'block';
+      } catch(e) {}
+    }, 350);
+  }
+
+  function pilihPengguna(id, nama, nik) {
+    selectedUserId = id;
+    document.getElementById('cariPenggunaInput').value = nama;
+    document.getElementById('cariPenggunaDropdown').style.display = 'none';
+    const box = document.getElementById('penggunaTeripilhBox');
+    document.getElementById('penggunaTeripilhNama').textContent = nama;
+    document.getElementById('penggunaTeripilhNik').textContent = nik;
+    box.style.display = 'flex';
+  }
+
+  function hapusPilihanPengguna() {
+    selectedUserId = null;
+    document.getElementById('cariPenggunaInput').value = '';
+    document.getElementById('penggunaTeripilhBox').style.display = 'none';
+  }
+
+  // Hitung karakter pesan
+  document.addEventListener('DOMContentLoaded', () => {
+    const pesanEl = document.getElementById('notifPesan');
+    if (pesanEl) {
+      pesanEl.addEventListener('input', () => {
+        document.getElementById('pesanCount').textContent = pesanEl.value.length;
+      });
+    }
+  });
+
+  async function kirimNotifikasi() {
+    const errEl = document.getElementById('notifError');
+    errEl.style.display = 'none';
+
+    const tipe = document.querySelector('input[name="tipePenerima"]:checked').value;
+    const judul = document.getElementById('notifJudul').value.trim();
+    const pesan = document.getElementById('notifPesan').value.trim();
+    const tipeNotif = document.querySelector('input[name="tipeNotif"]:checked').value;
+
+    if (!judul) { errEl.textContent = '⚠️ Judul notifikasi wajib diisi.'; errEl.style.display = 'block'; return; }
+    if (!pesan) { errEl.textContent = '⚠️ Isi pesan wajib diisi.'; errEl.style.display = 'block'; return; }
+    if (tipe === 'spesifik' && !selectedUserId) {
+      errEl.textContent = '⚠️ Pilih pengguna tujuan terlebih dahulu.'; errEl.style.display = 'block'; return;
+    }
+
+    const btn = document.getElementById('kirimNotifBtn');
+    const btnText = document.getElementById('kirimNotifBtnText');
+    btn.disabled = true;
+    btnText.textContent = '⏳ Mengirim...';
+
+    try {
+      const body = { judul, pesan, tipe: tipeNotif };
+      if (tipe === 'spesifik') body.user_id = selectedUserId;
+
+      const endpoint = tipe === 'broadcast'
+        ? `${API}/api/admin/notifikasi/broadcast`
+        : `${API}/api/admin/notifikasi/kirim`;
+
+      const res = await fetch(endpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${adminToken}` },
+        body: JSON.stringify(body)
+      });
+      const data = await res.json();
+
+      if (!res.ok) { errEl.textContent = data.message || 'Gagal mengirim.'; errEl.style.display = 'block'; return; }
+
+      showAdminToast(data.message || 'Notifikasi berhasil dikirim!', 'success');
+      // Reset form
+      document.getElementById('notifJudul').value = '';
+      document.getElementById('notifPesan').value = '';
+      document.getElementById('pesanCount').textContent = '0';
+      hapusPilihanPengguna();
+      loadRiwayatNotif();
+    } catch(e) {
+      errEl.textContent = '⚠️ Tidak bisa terhubung ke server.'; errEl.style.display = 'block';
+    } finally {
+      btn.disabled = false;
+      btnText.textContent = '🔔 Kirim Notifikasi';
+    }
+  }
+
+  async function loadRiwayatNotif() {
+    const body = document.getElementById('riwayatNotifBody');
+    body.innerHTML = '<div class="table-loading">Memuat...</div>';
+    try {
+      const res = await fetch(`${API}/api/admin/notifikasi`, {
+        headers: { 'Authorization': `Bearer ${adminToken}` }
+      });
+      const data = await res.json();
+
+      if (!data || data.length === 0) {
+        body.innerHTML = '<div class="table-empty"><div class="empty-icon">🔔</div><p>Belum ada notifikasi terkirim</p></div>';
+        return;
+      }
+
+      const ikonMap = { info:'📢', success:'✅', warning:'⚠️', promo:'🎁' };
+      const rows = data.map(n => `
+        <tr>
+          <td data-label="Tipe" style="font-size:18px; text-align:center;">${ikonMap[n.tipe] || '📢'}</td>
+          <td data-label="Penerima">
+            ${n.user_id
+              ? `<div style="font-size:12px;font-weight:700;color:#0f172a;">${escHtml(n.users?.nama_lengkap || '—')}</div><div style="font-size:11px;color:#94a3b8;">Khusus</div>`
+              : `<div style="font-size:12px;font-weight:700;color:#0f172a;">Semua Nasabah</div><div style="font-size:11px;color:#94a3b8;">Broadcast</div>`}
+          </td>
+          <td data-label="Pesan">
+            <div style="font-size:12px;font-weight:700;color:#0f172a;">${escHtml(n.judul)}</div>
+            <div style="font-size:11px;color:#64748b;margin-top:2px;max-width:240px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${escHtml(n.pesan)}</div>
+          </td>
+          <td data-label="Waktu" style="font-size:11px;color:#94a3b8;white-space:nowrap;">${formatTgl(n.created_at)}</td>
+          <td data-label="">
+            <button onclick="hapusNotif('${n.id}')" style="background:none;border:none;cursor:pointer;color:#dc2626;font-size:12px;font-weight:700;padding:4px 8px;border-radius:6px;font-family:inherit;" title="Hapus notifikasi ini">✕ Hapus</button>
+          </td>
+        </tr>`).join('');
+
+      body.innerHTML = `
+        <div style="overflow-x:auto;">
+          <table class="users-table">
+            <thead><tr><th style="width:40px;"></th><th>Penerima</th><th>Pesan</th><th>Waktu</th><th></th></tr></thead>
+            <tbody>${rows}</tbody>
+          </table>
+        </div>`;
+    } catch(e) {
+      body.innerHTML = '<div class="table-empty"><div class="empty-icon">⚠️</div><p>Gagal memuat riwayat</p></div>';
+    }
+  }
+
+  async function hapusNotif(id) {
+    if (!confirm('Hapus notifikasi ini?')) return;
+    try {
+      const res = await fetch(`${API}/api/admin/notifikasi/${id}`, {
+        method: 'DELETE',
+        headers: { 'Authorization': `Bearer ${adminToken}` }
+      });
+      const data = await res.json();
+      if (!res.ok) { showAdminToast(data.message || 'Gagal menghapus.', 'error'); return; }
+      showAdminToast('Notifikasi dihapus.', 'success');
+      loadRiwayatNotif();
+    } catch(e) {
+      showAdminToast('Tidak bisa terhubung ke server.', 'error');
+    }
+  }
+
+  function showSection(section, status) {
+    document.getElementById('section-dashboard').style.display = 'none';
+    document.getElementById('section-users').style.display = 'none';
+    document.getElementById('section-penarikan').style.display = 'none';
+    document.getElementById('section-notifikasi').style.display = 'none';
+
+    document.querySelectorAll('.sidebar-nav button').forEach(a => { a.classList.remove('active'); a.removeAttribute('aria-current'); });
+
+    if (section === 'dashboard') {
+      document.getElementById('section-dashboard').style.display = 'block';
+      document.getElementById('nav-dashboard').classList.add('active');
+      document.getElementById('nav-dashboard').setAttribute('aria-current', 'page');
+      document.getElementById('topbarTitle').textContent = 'Dashboard';
+      loadStats();
+    } else if (section === 'penarikan') {
+      document.getElementById('section-penarikan').style.display = 'block';
+      const navEl = document.getElementById('nav-penarikan');
+      if (navEl) { navEl.classList.add('active'); navEl.setAttribute('aria-current', 'page'); }
+      document.getElementById('topbarTitle').textContent = 'Pencairan Dana';
+      setFilterPenarikan(currentPenarikanStatus);
+    } else if (section === 'notifikasi') {
+      document.getElementById('section-notifikasi').style.display = 'block';
+      const navEl = document.getElementById('nav-notifikasi');
+      if (navEl) { navEl.classList.add('active'); navEl.setAttribute('aria-current', 'page'); }
+      document.getElementById('topbarTitle').textContent = 'Kirim Notifikasi';
+      loadRiwayatNotif();
+    } else {
+      document.getElementById('section-users').style.display = 'block';
+      const navId = 'nav-' + (status || 'semua');
+      const navEl = document.getElementById(navId);
+      if (navEl) { navEl.classList.add('active'); navEl.setAttribute('aria-current', 'page'); }
+
+      const titleMap = {
+        semua: 'Semua Nasabah',
+        menunggu: 'Menunggu Verifikasi',
+        terverifikasi: 'Terverifikasi',
+        ditolak: 'Ditolak',
+        belum_verifikasi: 'Belum Verifikasi'
+      };
+      document.getElementById('topbarTitle').textContent = titleMap[status] || 'Pengguna';
+      setFilterStatus(status || 'semua');
+    }
+
+    closeSidebar();
+  }
+
+  function setFilterStatus(status) {
+    currentStatus = status;
+    currentPage = 0;
+    document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+    const activeTab = document.querySelector(`.filter-tab[data-status="${status}"]`);
+    if (activeTab) activeTab.classList.add('active');
+    loadUsers();
+  }
+
+  /* ============================================================
+     STATS
+     ============================================================ */
+  async function loadStats() {
+    try {
+      const res = await fetch(`${API}/api/admin/stats`, {
+        headers: { 'Authorization': `Bearer ${adminToken}` }
+      });
+
+      if (res.status === 401 || res.status === 403) { adminLogout(); return; }
+      const data = await res.json();
+
+      document.getElementById('statTotal').textContent = data.totalUser || 0;
+      document.getElementById('statMenunggu').textContent = data.menunggu || 0;
+      document.getElementById('statTerverifikasi').textContent = data.terverifikasi || 0;
+      document.getElementById('statDitolak').textContent = data.ditolak || 0;
+      document.getElementById('statPenarikan').textContent = 'Rp ' + (data.totalPenarikan || 0).toLocaleString('id-ID');
+      document.getElementById('statPendingPenarikan').textContent = data.pendingPenarikan || 0;
+
+      // Badge sidebar verifikasi pending
+      const badge = document.getElementById('badgePending');
+      if (data.menunggu > 0) {
+        badge.textContent = data.menunggu;
+        badge.style.display = 'inline';
+      } else {
+        badge.style.display = 'none';
+      }
+
+      // Badge sidebar penarikan pending
+      const badgeP = document.getElementById('badgePenarikan');
+      if (data.pendingPenarikan > 0) {
+        badgeP.textContent = data.pendingPenarikan;
+        badgeP.style.display = 'inline';
+      } else {
+        badgeP.style.display = 'none';
+      }
+
+      // Quick pending section
+      if (data.menunggu > 0) {
+        document.getElementById('quickPendingSection').style.display = 'block';
+        loadQuickPending();
+      }
+    } catch (e) {
+      console.error('Gagal load stats', e);
+    }
+  }
+
+  async function loadQuickPending() {
+    try {
+      const res = await fetch(`${API}/api/admin/users?status=menunggu&limit=5`, {
+        headers: { 'Authorization': `Bearer ${adminToken}` }
+      });
+      const { data } = await res.json();
+      const container = document.getElementById('quickPendingList');
+
+      if (!data || data.length === 0) {
+        document.getElementById('quickPendingSection').style.display = 'none';
+        return;
+      }
+
+      container.innerHTML = data.map(u => `
+        <div class="users-table-card" style="margin-bottom:8px; padding:14px 16px; display:flex; align-items:center; gap:12px; cursor:pointer; border-radius:14px;" onclick="openUserModal('${u.id}')">
+          <div style="width:40px;height:40px;border-radius:50%;background:#0a1930;border:1.5px solid #a9781e;display:flex;align-items:center;justify-content:center;font-family:'Source Serif 4',serif;font-size:16px;font-weight:600;color:#a9781e;flex-shrink:0;">
+            ${u.nama_lengkap[0].toUpperCase()}
+          </div>
+          <div style="flex:1; min-width:0;">
+            <div style="font-size:13px;font-weight:700;color:#1c1917;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${u.nama_lengkap}</div>
+            <div style="font-size:11px;color:#8b8577;font-family:'IBM Plex Mono',monospace;">${u.nik_ktp}</div>
+          </div>
+          <span class="status-badge menunggu">Menunggu</span>
+          <span style="font-size:18px;color:#8b8577;" aria-hidden="true">›</span>
+        </div>`).join('');
+    } catch (e) {}
+  }
+
+  /* ============================================================
+     USERS TABLE
+     ============================================================ */
+  async function loadUsers() {
+    const tableBody = document.getElementById('tableBody');
+    tableBody.innerHTML = '<div class="table-loading">Memuat data...</div>';
+
+    const params = new URLSearchParams({
+      limit: PAGE_LIMIT,
+      offset: currentPage * PAGE_LIMIT
+    });
+    if (currentStatus !== 'semua') params.set('status', currentStatus);
+    if (currentSearch) params.set('search', currentSearch);
+
+    try {
+      const res = await fetch(`${API}/api/admin/users?${params}`, {
+        headers: { 'Authorization': `Bearer ${adminToken}` }
+      });
+      if (res.status === 401 || res.status === 403) { adminLogout(); return; }
+
+      const { data, count } = await res.json();
+      totalUsers = count || 0;
+
+      document.getElementById('tableCount').textContent = `${totalUsers.toLocaleString('id-ID')} pengguna`;
+
+      if (!data || data.length === 0) {
+        tableBody.innerHTML = `
+          <div class="table-empty">
+            <div class="empty-icon">👤</div>
+            <p>Tidak ada data pengguna</p>
+            <span>Coba ubah filter atau kata kunci pencarian</span>
+          </div>`;
+        document.getElementById('pagination').style.display = 'none';
+        return;
+      }
+
+      const tbody = data.map(u => `
+        <tr onclick="openUserModal('${u.id}')">
+          <td data-label="Nama / NIK">
+            <div class="table-name">${escHtml(u.nama_lengkap)}</div>
+            <div class="table-nik">${u.nik_ktp}</div>
+          </td>
+          <td data-label="Email" style="font-size:12px;color:#64748b;">${escHtml(u.email)}</td>
+          <td data-label="Saldo" class="table-saldo">Rp ${(u.saldo || 0).toLocaleString('id-ID')}</td>
+          <td data-label="Status Verif"><span class="status-badge ${u.verifikasi_status || 'belum_verifikasi'}">${statusLabel(u.verifikasi_status)}</span></td>
+          <td data-label="Terdaftar" style="font-size:11px;color:#94a3b8;">${formatTgl(u.created_at)}</td>
+          <td data-label="" class="table-action-cell"><button class="btn-detail" onclick="event.stopPropagation();openUserModal('${u.id}')">Detail</button></td>
+        </tr>`).join('');
+
+      tableBody.innerHTML = `
+        <div style="overflow-x:auto;">
+          <table class="users-table">
+            <thead>
+              <tr>
+                <th>Nama / NIK</th>
+                <th>Email</th>
+                <th>Saldo</th>
+                <th>Status Verif</th>
+                <th>Terdaftar</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>${tbody}</tbody>
+          </table>
+        </div>`;
+
+      // Pagination
+      const paginationEl = document.getElementById('pagination');
+      const totalPages = Math.ceil(totalUsers / PAGE_LIMIT);
+      if (totalPages > 1) {
+        paginationEl.style.display = 'flex';
+        const start = currentPage * PAGE_LIMIT + 1;
+        const end = Math.min((currentPage + 1) * PAGE_LIMIT, totalUsers);
+        document.getElementById('paginationInfo').textContent = `Menampilkan ${start}–${end} dari ${totalUsers.toLocaleString('id-ID')}`;
+        document.getElementById('prevBtn').disabled = currentPage === 0;
+        document.getElementById('nextBtn').disabled = currentPage >= totalPages - 1;
+      } else {
+        paginationEl.style.display = 'none';
+      }
+    } catch (e) {
+      tableBody.innerHTML = `<div class="table-empty"><div class="empty-icon">⚠️</div><p>Gagal memuat data</p><span>Periksa koneksi server</span></div>`;
+    }
+  }
+
+  function changePage(delta) {
+    currentPage = Math.max(0, currentPage + delta);
+    loadUsers();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function debounceSearch() {
+    clearTimeout(searchTimeout);
+    searchTimeout = setTimeout(() => {
+      currentSearch = document.getElementById('searchInput').value.trim();
+      currentPage = 0;
+      loadUsers();
+    }, 400);
+  }
+
+  /* ============================================================
+     USER MODAL
+     ============================================================ */
+  async function openUserModal(userId) {
+    document.getElementById('userModalOverlay').style.display = 'flex';
+    document.getElementById('userModalBody').innerHTML = '<div class="table-loading">Memuat detail pengguna...</div>';
+
+    try {
+      const res = await fetch(`${API}/api/admin/users/${userId}`, {
+        headers: { 'Authorization': `Bearer ${adminToken}` }
+      });
+      const { user, riwayat } = await res.json();
+
+      if (!user) {
+        document.getElementById('userModalBody').innerHTML = '<div class="table-empty"><p>User tidak ditemukan</p></div>';
+        return;
+      }
+
+      const status = user.verifikasi_status || 'belum_verifikasi';
+
+      const riwayatHTML = riwayat && riwayat.length > 0
+        ? `<div class="mini-trx-list">${riwayat.map(t => `
+            <div class="mini-trx">
+              <div class="mini-trx-icon">${t.jenis === 'tarik' ? '💸' : '💰'}</div>
+              <div class="mini-trx-info">
+                <div class="mini-trx-nama">${t.jenis === 'tarik' ? 'Tarik Saldo' : 'Tambah Saldo'}</div>
+                <div class="mini-trx-tgl">${formatTgl(t.created_at)}</div>
+              </div>
+              <div class="mini-trx-amount ${t.jenis}">
+                ${t.jenis === 'tarik' ? '−' : '+'}Rp ${(t.nominal||0).toLocaleString('id-ID')}
+              </div>
+            </div>`).join('')}</div>`
+        : '<div style="text-align:center;padding:16px;color:#94a3b8;font-size:13px;">Belum ada transaksi</div>';
+
+      // Verifikasi action box
+      let verifActionHTML = '';
+      if (status === 'menunggu') {
+        verifActionHTML = `
+          <div class="verif-action-box">
+            <div class="verif-action-title">Tindakan Verifikasi</div>
+            <p style="font-size:12px;color:#64748b;margin-bottom:12px;">Periksa data di atas lalu setujui atau tolak pengajuan verifikasi pengguna ini.</p>
+            <textarea class="verif-catatan-input" id="verifCatatan" placeholder="Catatan (opsional, wajib diisi jika ditolak)..."></textarea>
+            <div class="verif-action-btns">
+              <button class="btn-approve" onclick="prosesVerifikasi('${user.id}','setujui')">✓ Setujui</button>
+              <button class="btn-reject" onclick="prosesVerifikasi('${user.id}','tolak')">✕ Tolak</button>
+            </div>
+          </div>`;
+      } else if (status === 'terverifikasi' || status === 'ditolak') {
+        verifActionHTML = `
+          <div class="verif-action-box">
+            <div class="verif-action-title">Kelola Verifikasi</div>
+            ${status === 'ditolak' ? `
+              <p style="font-size:12px;color:#64748b;margin-bottom:12px;">Jika pengguna sudah memperbaiki data, Anda bisa setujui atau reset untuk pengguna mengajukan ulang.</p>
+              <div class="verif-action-btns">
+                <button class="btn-approve" onclick="prosesVerifikasi('${user.id}','setujui')">✓ Setujui</button>
+              </div>` : ''}
+            <button class="btn-reset-verif" onclick="resetVerifikasi('${user.id}')">
+              🔄 Reset ke "Belum Verifikasi"
+            </button>
+          </div>`;
+      } else if (status === 'belum_verifikasi') {
+        verifActionHTML = `
+          <div class="verif-action-box">
+            <div class="verif-action-title">Verifikasi Manual</div>
+            <p style="font-size:12px;color:#64748b;margin-bottom:12px;">Pengguna belum mengajukan verifikasi. Anda bisa menyetujui langsung jika data sudah valid.</p>
+            <textarea class="verif-catatan-input" id="verifCatatan" placeholder="Catatan (opsional)..."></textarea>
+            <div class="verif-action-btns">
+              <button class="btn-approve" onclick="prosesVerifikasi('${user.id}','setujui')">✓ Setujui Manual</button>
+            </div>
+          </div>`;
+      }
+
+      document.getElementById('userModalBody').innerHTML = `
+        <div class="user-detail-header">
+          <div class="user-detail-avatar">${user.nama_lengkap[0].toUpperCase()}</div>
+          <div class="user-detail-info">
+            <h4>${escHtml(user.nama_lengkap)}</h4>
+            <p>${user.nik_ktp}</p>
+          </div>
+        </div>
+
+        <div class="detail-section">
+          <div class="detail-section-title">Informasi Akun</div>
+          <div class="detail-row">
+            <span class="detail-row-label">Email</span>
+            <span class="detail-row-value">${escHtml(user.email)}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-row-label">Terdaftar</span>
+            <span class="detail-row-value">${formatTgl(user.created_at)}</span>
+          </div>
+        </div>
+
+        <div class="detail-section">
+          <div class="detail-section-title">Kelola Saldo</div>
+          <p class="saldo-current">Saldo saat ini: <strong>Rp ${(user.saldo||0).toLocaleString('id-ID')}</strong></p>
+          <div class="saldo-edit-row">
+            <span class="saldo-edit-prefix">Rp</span>
+            <label for="saldoInput" class="sr-only">Nominal saldo baru</label>
+            <input type="number" min="0" step="1000" class="saldo-edit-input" id="saldoInput" value="${user.saldo||0}">
+            <button class="btn-save-saldo" onclick="simpanSaldo('${user.id}')">Simpan</button>
+          </div>
+        </div>
+
+        <div class="detail-section">
+          <div class="detail-section-title">Status Verifikasi</div>
+          <div class="detail-row">
+            <span class="detail-row-label">Status</span>
+            <span class="status-badge ${status}">${statusLabel(status)}</span>
+          </div>
+          ${user.verifikasi_catatan ? `
+          <div class="detail-row">
+            <span class="detail-row-label">Catatan</span>
+            <span class="detail-row-value" style="color:#dc2626;">${escHtml(user.verifikasi_catatan)}</span>
+          </div>` : ''}
+          ${user.verifikasi_at ? `
+          <div class="detail-row">
+            <span class="detail-row-label">Diproses</span>
+            <span class="detail-row-value">${formatTgl(user.verifikasi_at)}</span>
+          </div>` : ''}
+          ${user.ktp_foto_url ? `
+          <div style="margin-top:12px;">
+            <div style="font-size:11px; font-weight:700; color:#64748b; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;">📷 Foto KTP</div>
+            <img src="${user.ktp_foto_url}" alt="Foto KTP"
+              style="width:100%; max-height:220px; object-fit:contain; border-radius:10px; border:2px solid #e2e8f0; background:#f8fafc; cursor:pointer;"
+              onclick="window.open('${user.ktp_foto_url}','_blank')"
+              title="Klik untuk lihat ukuran penuh" />
+            <p style="font-size:10px; color:#94a3b8; margin-top:4px; text-align:center;">Klik foto untuk lihat ukuran penuh</p>
+          </div>` : `
+          <div style="margin-top:12px; padding:12px; background:#fef9c3; border-radius:8px; border:1px solid #fde047;">
+            <p style="font-size:12px; color:#854d0e; margin:0;">⚠️ Foto KTP tidak tersedia</p>
+          </div>`}
+        </div>
+
+        ${verifActionHTML}
+
+        <div class="detail-section" style="margin-top:20px;">
+          <div class="detail-section-title">Riwayat Transaksi Terakhir</div>
+          ${riwayatHTML}
+        </div>
+
+        <div class="danger-zone">
+          <div class="detail-section-title danger-title">Zona Berbahaya</div>
+          <p class="danger-desc">Menghapus pengguna akan menghapus akun beserta seluruh riwayat transaksinya secara permanen. Tindakan ini tidak dapat dibatalkan.</p>
+          <button class="btn-delete-user" onclick="hapusPengguna('${user.id}')">Hapus Pengguna</button>
+        </div>`;
+    } catch (e) {
+      document.getElementById('userModalBody').innerHTML = '<div class="table-empty"><p>Gagal memuat detail</p></div>';
+    }
+  }
+
+  function closeUserModal() {
+    document.getElementById('userModalOverlay').style.display = 'none';
+  }
+
+  function closeModal(e) {
+    if (e.target === document.getElementById('userModalOverlay')) closeUserModal();
+  }
+
+  /* ============================================================
+     VERIFIKASI ACTIONS
+     ============================================================ */
+  async function prosesVerifikasi(userId, aksi) {
+    const catatanEl = document.getElementById('verifCatatan');
+    const catatan = catatanEl ? catatanEl.value.trim() : '';
+
+    if (aksi === 'tolak' && !catatan) {
+      showAdminToast('Wajib isi catatan alasan penolakan.', 'error');
+      if (catatanEl) catatanEl.focus();
+      return;
+    }
+
+    try {
+      const res = await fetch(`${API}/api/admin/users/${userId}/verifikasi`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${adminToken}`
+        },
+        body: JSON.stringify({ aksi, catatan })
+      });
+      const data = await res.json();
+
+      if (!res.ok) {
+        showAdminToast(data.message || 'Gagal memproses.', 'error');
+        return;
+      }
+
+      showAdminToast(data.message, 'success');
+      closeUserModal();
+      loadStats();
+      if (document.getElementById('section-users').style.display !== 'none') loadUsers();
+    } catch (e) {
+      showAdminToast('Tidak bisa terhubung ke server.', 'error');
+    }
+  }
+
+  async function resetVerifikasi(userId) {
+    if (!confirm('Reset status verifikasi pengguna ini ke "Belum Verifikasi"?')) return;
+
+    try {
+      const res = await fetch(`${API}/api/admin/users/${userId}/reset-verifikasi`, {
+        method: 'PUT',
+        headers: { 'Authorization': `Bearer ${adminToken}` }
+      });
+      const data = await res.json();
+
+      if (!res.ok) {
+        showAdminToast(data.message || 'Gagal reset.', 'error');
+        return;
+      }
+
+      showAdminToast(data.message, 'success');
+      closeUserModal();
+      loadStats();
+      if (document.getElementById('section-users').style.display !== 'none') loadUsers();
+    } catch (e) {
+      showAdminToast('Tidak bisa terhubung ke server.', 'error');
+    }
+  }
+
+  async function simpanSaldo(userId) {
+    const input = document.getElementById('saldoInput');
+    const nilai = parseInt(input.value, 10);
+
+    if (isNaN(nilai) || nilai < 0) {
+      showAdminToast('Nominal saldo tidak valid.', 'error');
+      input.focus();
+      return;
+    }
+
+    try {
+      const res = await fetch(`${API}/api/admin/users/${userId}/saldo`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${adminToken}`
+        },
+        body: JSON.stringify({ saldo: nilai })
+      });
+      const data = await res.json();
+
+      if (!res.ok) {
+        showAdminToast(data.message || 'Gagal memperbarui saldo.', 'error');
+        return;
+      }
+
+      showAdminToast(data.message, 'success');
+      openUserModal(userId);
+      loadStats();
+      if (document.getElementById('section-users').style.display !== 'none') loadUsers();
+    } catch (e) {
+      showAdminToast('Tidak bisa terhubung ke server.', 'error');
+    }
+  }
+
+  async function hapusPengguna(userId) {
+    const namaEl = document.querySelector('#userModalBody .user-detail-info h4');
+    const nama = namaEl ? namaEl.textContent : 'pengguna ini';
+
+    if (!confirm(`Hapus pengguna "${nama}" secara permanen?\n\nSeluruh riwayat transaksinya juga akan ikut terhapus. Tindakan ini tidak dapat dibatalkan.`)) return;
+
+    try {
+      const res = await fetch(`${API}/api/admin/users/${userId}`, {
+        method: 'DELETE',
+        headers: { 'Authorization': `Bearer ${adminToken}` }
+      });
+      const data = await res.json();
+
+      if (!res.ok) {
+        showAdminToast(data.message || 'Gagal menghapus pengguna.', 'error');
+        return;
+      }
+
+      showAdminToast(data.message, 'success');
+      closeUserModal();
+      loadStats();
+      if (document.getElementById('section-users').style.display !== 'none') loadUsers();
+    } catch (e) {
+      showAdminToast('Tidak bisa terhubung ke server.', 'error');
+    }
+  }
+
+  /* ============================================================
+     HELPERS
+     ============================================================ */
+  function statusLabel(s) {
+    const map = {
+      belum_verifikasi: '— Belum',
+      menunggu: 'Menunggu',
+      terverifikasi: 'Terverifikasi',
+      ditolak: 'Ditolak'
+    };
+    return map[s] || s || '—';
+  }
+
+  function formatTgl(iso) {
+    if (!iso) return '—';
+    const d = new Date(iso);
+    return d.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' });
+  }
+
+  function escHtml(str) {
+    if (!str) return '';
+    return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  function showAdminToast(msg, type) {
+    const t = document.getElementById('adminToast');
+    t.textContent = msg;
+    t.className = 'admin-toast show ' + type;
+    setTimeout(() => { t.className = 'admin-toast'; }, 3500);
+  }
+
+  function toggleSidebar() {
+    const sb = document.getElementById('adminSidebar');
+    const ov = document.getElementById('sidebarOverlay');
+    const btn = document.getElementById('hamburgerBtn');
+    sb.classList.toggle('open');
+    const isOpen = sb.classList.contains('open');
+    ov.style.display = isOpen ? 'block' : 'none';
+    if (btn) btn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+  }
+
+  function closeSidebar() {
+    document.getElementById('adminSidebar').classList.remove('open');
+    document.getElementById('sidebarOverlay').style.display = 'none';
+    const btn = document.getElementById('hamburgerBtn');
+    if (btn) btn.setAttribute('aria-expanded', 'false');
+  }
+</script>
+</body>
+</html>

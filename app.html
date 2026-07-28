@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dana Pinjam Online</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="app-container">
+
+  <!-- ==== HALAMAN BERANDA ==== -->
+  <section id="view-beranda" class="view">
+    <div class="top-header" id="berandaHeader">
+      <div class="header-inner">
+        <div class="header-row">
+          <div>
+            <p class="header-greet">Selamat Datang</p>
+            <h2 id="greeting">Halo!</h2>
+          </div>
+          <div class="header-avatar" id="headerInitial" onclick="showView('profil')">?</div>
+        </div>
+        <!-- Banner Verifikasi -->
+        <div id="verifBanner" style="display:none; margin-top:16px;"></div>
+      </div>
+    </div>
+
+    <div class="content">
+      <!-- Premium Balance Card -->
+      <div class="balance-card" id="balanceCard">
+        <div class="balance-top">
+          <div>
+            <span class="balance-label">Total Saldo Pinjaman</span>
+            <h1 class="balance-amount" id="saldoAmount">Rp 0</h1>
+          </div>
+          <div class="balance-card-logo">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="2" y="6" width="20" height="14" rx="3" fill="#2563eb" opacity="0.15"/>
+              <rect x="2" y="6" width="20" height="14" rx="3" stroke="#2563eb" stroke-width="1.8"/>
+              <path d="M2 10h20" stroke="#2563eb" stroke-width="1.8"/>
+              <rect x="15" y="13" width="5" height="3.5" rx="1.2" fill="#2563eb"/>
+              <circle cx="17.5" cy="14.75" r="0.8" fill="#fff"/>
+              <path d="M6 10V7a4 4 0 018 0v3" stroke="#2563eb" stroke-width="1.8" stroke-linecap="round"/>
+            </svg>
+          </div>
+        </div>
+        <div class="balance-card-footer">
+          <div class="balance-owner">
+            <div class="balance-owner-label">Nasabah</div>
+            <div class="balance-owner-name" id="balanceName">—</div>
+          </div>
+          <button class="tarik-btn-card" onclick="showView('topup')">
+            Cairkan Dana
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="12" y1="5" x2="12" y2="19"/>
+              <polyline points="19,12 12,19 5,12"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- ==== INFO PRODUK PINJAMAN ==== -->
+      <div class="section-header" style="margin-top:26px;">
+        <h3 class="section-title">Produk Pinjaman Aktif</h3>
+        <span class="bansos-tahun-badge">2026</span>
+      </div>
+
+      <!-- Kartu KTA -->
+      <div class="bansos-program-card pkh">
+        <div class="bansos-program-header">
+          <div class="bansos-program-icon">💼</div>
+          <div class="bansos-program-info">
+            <div class="bansos-program-nama">KTA</div>
+            <div class="bansos-program-kepanjangan">Kredit Tanpa Agunan</div>
+          </div>
+          <span class="bansos-program-status aktif">Aktif</span>
+        </div>
+        <div class="bansos-program-desc">
+          Pinjaman tunai tanpa jaminan untuk kebutuhan modal usaha dan pribadi. Proses cepat, cair dalam 1×24 jam ke rekening Anda.
+        </div>
+        <div class="bansos-program-jadwal">
+          <div class="bansos-jadwal-title">📅 Pilihan Tenor Cicilan</div>
+          <div class="bansos-jadwal-grid">
+            <div class="bansos-jadwal-item selesai">
+              <div class="bansos-jadwal-bln">3 Bulan</div>
+              <div class="bansos-jadwal-ket">Bunga 1%/bln</div>
+            </div>
+            <div class="bansos-jadwal-item selesai">
+              <div class="bansos-jadwal-bln">6 Bulan</div>
+              <div class="bansos-jadwal-ket">Bunga 1,2%/bln</div>
+            </div>
+            <div class="bansos-jadwal-item aktif-now">
+              <div class="bansos-jadwal-bln">12 Bulan</div>
+              <div class="bansos-jadwal-ket">Bunga 1,5%/bln ●</div>
+            </div>
+            <div class="bansos-jadwal-item">
+              <div class="bansos-jadwal-bln">24 Bulan</div>
+              <div class="bansos-jadwal-ket">Bunga 1,8%/bln</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Kartu BPNT -->
+      <div class="bansos-program-card bpnt">
+        <div class="bansos-program-header">
+          <div class="bansos-program-icon">🏪</div>
+          <div class="bansos-program-info">
+            <div class="bansos-program-nama">Pinjaman Usaha</div>
+            <div class="bansos-program-kepanjangan">Modal Usaha Mikro & Kecil</div>
+          </div>
+          <span class="bansos-program-status aktif">Aktif</span>
+        </div>
+        <div class="bansos-program-desc">
+          Pinjaman khusus untuk pengembangan usaha mikro dan kecil. Bunga rendah, tenor fleksibel, tanpa agunan untuk usaha yang sudah berjalan.
+        </div>
+        <div class="bansos-info-row">
+          <div class="bansos-info-chip">
+            <span class="bansos-info-chip-icon">💰</span>
+            <span>Hingga Rp 50 Juta</span>
+          </div>
+          <div class="bansos-info-chip">
+            <span class="bansos-info-chip-icon">📆</span>
+            <span>Cair 1×24 jam</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Kartu Pinjaman Darurat -->
+      <div class="bansos-program-card bst">
+        <div class="bansos-program-header">
+          <div class="bansos-program-icon">🚨</div>
+          <div class="bansos-program-info">
+            <div class="bansos-program-nama">Pinjaman Darurat</div>
+            <div class="bansos-program-kepanjangan">Dana Cepat Kebutuhan Mendesak</div>
+          </div>
+          <span class="bansos-program-status menunggu">Menunggu</span>
+        </div>
+        <div class="bansos-program-desc">
+          Pinjaman kilat untuk kebutuhan mendesak. Proses 15 menit, cair dalam hitungan jam. Bunga kompetitif, cicilan ringan.
+        </div>
+        <div class="bansos-info-row">
+          <div class="bansos-info-chip">
+            <span class="bansos-info-chip-icon">📋</span>
+            <span>Proses 15 menit</span>
+          </div>
+          <div class="bansos-info-chip">
+            <span class="bansos-info-chip-icon">⚡</span>
+            <span>Cair < 1 Jam</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Banner info -->
+      <div class="bansos-info-banner">
+        <div class="bansos-banner-icon">ℹ️</div>
+        <div class="bansos-banner-text">
+          Pastikan data NIK & rekening Anda selalu valid agar proses pencairan pinjaman berjalan lancar. Hubungi CS kami jika ada kendala pengajuan.
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ==== HALAMAN TARIK SALDO ==== -->
+  <section id="view-topup" class="view" style="display:none;">
+    <div class="top-header tarik-header">
+      <div class="tarik-header-inner">
+        <p class="header-greet" style="margin-bottom:4px;">Pencairan Pinjaman</p>
+        <h2 style="font-size:22px; font-weight:800; margin-bottom:20px; letter-spacing:-0.3px;">Cairkan Dana</h2>
+        <div class="tarik-saldo-banner">
+          <div class="banner-row">
+            <div>
+              <p class="banner-label">Limit Pinjaman Tersedia</p>
+              <h1 class="banner-amount" id="tarikSaldoDisplay">Rp 0</h1>
+            </div>
+            <div class="banner-icon">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.9)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="7" width="20" height="14" rx="3"/>
+                <path d="M16 14a1 1 0 100 2 1 1 0 000-2z" fill="rgba(255,255,255,0.9)" stroke="none"/>
+                <rect x="13" y="12" width="7" height="4" rx="1.5" stroke="rgba(255,255,255,0.9)" fill="rgba(255,255,255,0.15)"/>
+                <path d="M6 7V5a2 2 0 014 0v2"/>
+              </svg>
+            </div>
+          </div>
+          <div class="banner-verified">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#bbf7d0" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20 6L9 17l-5-5"/>
+            </svg>
+            Limit Terverifikasi Sistem
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="content">
+      <!-- Blok jika belum terverifikasi -->
+      <div id="tarikBlockedPanel" style="display:none;">
+        <div class="card tarik-form-card">
+          <div id="tarikBlockedContent"></div>
+        </div>
+      </div>
+
+      <!-- Form tarik normal -->
+      <div id="tarikFormPanel">
+        <div class="tarik-form-card">
+
+          <!-- Indikator langkah penarikan -->
+          <div class="tarik-steps">
+            <div class="tarik-step">
+              <div class="tarik-step-dot">1</div>
+              <span class="tarik-step-label">Nominal</span>
+            </div>
+            <div class="tarik-step-line"></div>
+            <div class="tarik-step is-upcoming">
+              <div class="tarik-step-dot">2</div>
+              <span class="tarik-step-label">Metode</span>
+            </div>
+            <div class="tarik-step-line"></div>
+            <div class="tarik-step is-upcoming">
+              <div class="tarik-step-dot">3</div>
+              <span class="tarik-step-label">Verifikasi</span>
+            </div>
+          </div>
+
+          <!-- Input nominal -->
+          <p class="field-label" style="margin-bottom:10px;">Masukkan Nominal</p>
+          <div class="nominal-input-wrap" id="nominalWrap">
+            <span class="rp-prefix">Rp</span>
+            <input
+              type="number"
+              id="nominalInput"
+              class="nominal-input-pro"
+              placeholder="0"
+              min="10000"
+              oninput="onNominalManualInput()"
+            >
+          </div>
+          <p id="tarikError" class="error tarik-error"></p>
+
+          <!-- Quick nominal -->
+          <p class="quick-label">Pilih Nominal</p>
+          <div class="quick-grid">
+            <button type="button" class="chip" onclick="setNominal(50000, this)">Rp 50rb</button>
+            <button type="button" class="chip" onclick="setNominal(100000, this)">Rp 100rb</button>
+            <button type="button" class="chip" onclick="setNominal(200000, this)">Rp 200rb</button>
+            <button type="button" class="chip" onclick="setNominal(300000, this)">Rp 300rb</button>
+            <button type="button" class="chip" onclick="setNominal(500000, this)">Rp 500rb</button>
+            <button type="button" class="chip chip-all" onclick="setNominalSemua(this)">Tarik Semua</button>
+          </div>
+
+          <!-- Sisa limit -->
+          <div class="sisa-saldo-row" id="sisaSaldoRow" style="display:none;">
+            <div class="sisa-top-row">
+              <div class="sisa-left">
+                <span class="sisa-icon">💰</span>
+                <span class="sisa-label">Sisa limit setelah tarik</span>
+              </div>
+              <span class="sisa-value" id="sisaSaldoVal">Rp 0</span>
+            </div>
+            <div class="sisa-divider"></div>
+            <div class="sisa-bottom-row">
+              <span class="sisa-bottom-label">Estimasi proses</span>
+              <span class="sisa-bottom-val">± 1x24 jam kerja</span>
+            </div>
+          </div>
+
+          <!-- CTA -->
+          <button class="primary-btn" style="margin-top:4px;" onclick="bukaMetodePenarikan()">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right:6px;">
+              <path d="M12 5v14M5 12l7 7 7-7"/>
+            </svg>
+            Cairkan Sekarang
+          </button>
+          <p class="tarik-note">Min. pencairan Rp 10.000 · Dana langsung cair ke rekening</p>
+
+          <div class="tarik-trust-footer">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="11" width="18" height="10" rx="2"/>
+              <path d="M7 11V7a5 5 0 0110 0v4"/>
+            </svg>
+            Transaksi aman &amp; terenkripsi end-to-end
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==== HALAMAN PROFIL ==== -->
+  <section id="view-profil" class="view" style="display:none;">
+    <div class="profile-header">
+      <div class="profile-card">
+        <!-- Avatar with glowing ring -->
+        <div class="profile-avatar-ring">
+          <div class="profile-avatar" id="profileAvatarEl">
+            <span id="profileInitials">--</span>
+          </div>
+        </div>
+
+        <!-- Name + badges -->
+        <div style="display:flex; align-items:center; gap:7px; justify-content:center; flex-wrap:wrap;">
+          <h3 id="pNama" style="margin:0; text-align:center; font-size:21px; font-weight:800; color:#fff; letter-spacing:-0.3px;">-</h3>
+          <span id="verifiedBadgeName" style="display:none;">
+            <svg width="20" height="20" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="12" cy="12" r="11" fill="#22c55e" opacity="0.9"/>
+              <polyline points="7 12 10.5 15.5 17 9" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+            </svg>
+          </span>
+          <button onclick="toggleEditNama()" id="editNamaBtn"
+            style="background:rgba(255,255,255,0.15); border:1px solid rgba(255,255,255,0.25); cursor:pointer; padding:5px 7px; color:rgba(255,255,255,0.8); line-height:0; border-radius:8px; transition:all 0.2s;">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/>
+              <path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/>
+            </svg>
+          </button>
+        </div>
+
+        <!-- Form edit nama -->
+        <div id="editNamaForm" style="display:none; margin-top:12px; width:100%; max-width:290px;">
+          <input id="editNamaInput" type="text" maxlength="60" placeholder="Nama lengkap baru..."
+            style="width:100%; padding:11px 14px; border:2px solid rgba(255,255,255,0.5); border-radius:12px; font-size:14px; font-weight:600; text-align:center; font-family:inherit; box-sizing:border-box; outline:none; background:rgba(255,255,255,0.15); color:#fff; backdrop-filter:blur(4px);" />
+          <div style="display:flex; gap:8px; margin-top:8px;">
+            <button onclick="batalEditNama()"
+              style="flex:1; padding:10px; background:rgba(255,255,255,0.12); border:1px solid rgba(255,255,255,0.2); border-radius:10px; font-size:13px; font-weight:600; color:rgba(255,255,255,0.75); cursor:pointer; font-family:inherit;">
+              Batal
+            </button>
+            <button onclick="simpanNama()" id="simpanNamaBtn"
+              style="flex:1; padding:10px; background:rgba(255,255,255,0.9); border:none; border-radius:10px; font-size:13px; font-weight:800; color:#1e40af; cursor:pointer; font-family:inherit;">
+              <span id="simpanNamaBtnText">Simpan</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Status badges -->
+        <div class="profile-badges" id="profileBadges">
+          <span class="badge-penerima">Nasabah Aktif</span>
+        </div>
+
+        <!-- Stats mini row -->
+        <div class="profile-stats-row" id="profileStatsRow">
+          <div class="profile-stat-item">
+            <div class="profile-stat-val" id="statSaldo">Rp 0</div>
+            <div class="profile-stat-lbl">Saldo</div>
+          </div>
+          <div class="profile-stat-item">
+            <div class="profile-stat-val" id="statStatusVerif">—</div>
+            <div class="profile-stat-lbl">Status</div>
+          </div>
+          <div class="profile-stat-item">
+            <div class="profile-stat-val" id="statTotalTrx">—</div>
+            <div class="profile-stat-lbl">Transaksi</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="content" style="padding-top: 16px;">
+      <div class="card info-card">
+        <div class="info-card-title">Informasi Akun</div>
+
+        <!-- NIK KTP -->
+        <div class="info-row">
+          <div class="info-row-left">
+            <div class="info-row-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="5" width="20" height="14" rx="2"/>
+                <line x1="2" y1="10" x2="22" y2="10"/>
+              </svg>
+            </div>
+            <span class="info-label">NIK KTP</span>
+          </div>
+          <span id="pNik" class="info-value">-</span>
+        </div>
+
+        <!-- Email -->
+        <div class="info-row">
+          <div class="info-row-left">
+            <div class="info-row-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                <polyline points="22,6 12,13 2,6"/>
+              </svg>
+            </div>
+            <span class="info-label">Email</span>
+          </div>
+          <span id="pEmail" class="info-value">-</span>
+        </div>
+
+        <!-- Status Verifikasi -->
+        <div class="info-row">
+          <div class="info-row-left">
+            <div class="info-row-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+              </svg>
+            </div>
+            <span class="info-label">Verifikasi Identitas</span>
+          </div>
+          <span id="pVerifBadge" class="info-value">-</span>
+        </div>
+      </div>
+
+      <!-- Catatan penolakan -->
+      <div id="catatanPenolakanBox" style="display:none;"></div>
+
+      <!-- Tombol ajukan verifikasi (jika belum/ditolak) -->
+      <div id="ajukanVerifBox" style="display:none;"></div>
+
+      <button class="logout-btn" onclick="logout()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/>
+          <polyline points="16,17 21,12 16,7"/>
+          <line x1="21" y1="12" x2="9" y2="12"/>
+        </svg>
+        Keluar dari Akun
+      </button>
+    </div>
+  </section>
+
+  <!-- ==== HALAMAN RIWAYAT TRANSAKSI ==== -->
+  <section id="view-riwayat" class="view" style="display:none;">
+    <div class="top-header">
+      <div class="back-header">
+        <button class="back-btn" onclick="showView('beranda')">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="19" y1="12" x2="5" y2="12"/>
+            <polyline points="12,19 5,12 12,5"/>
+          </svg>
+        </button>
+        <h2>Riwayat Transaksi</h2>
+      </div>
+    </div>
+    <div class="content">
+      <div id="riwayatList"></div>
+      <button class="load-more-btn" id="loadMoreBtn" onclick="loadRiwayat()" style="display:none;">
+        Muat Lebih Banyak
+      </button>
+    </div>
+  </section>
+
+  <!-- ==== HALAMAN AKTIVITAS ==== -->
+  <section id="view-aktivitas" class="view" style="display:none;">
+    <div class="top-header">
+      <div class="header-inner">
+        <div class="header-row">
+          <div>
+            <p class="header-greet">RIWAYAT LENGKAP</p>
+            <h2>Aktivitas</h2>
+          </div>
+          <div style="width:44px;height:44px;background:rgba(255,255,255,0.15);border:2px solid rgba(255,255,255,0.3);border-radius:14px;display:flex;align-items:center;justify-content:center;">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.9)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="content">
+      <div id="aktivitasList"></div>
+      <button class="load-more-btn" id="loadMoreAktivitasBtn" onclick="loadAktivitas()" style="display:none;">
+        Muat Lebih Banyak
+      </button>
+    </div>
+  </section>
+
+  <!-- ==== HALAMAN NOTIFIKASI ==== -->
+  <section id="view-notifikasi" class="view" style="display:none;">
+    <div class="top-header">
+      <div class="header-inner">
+        <div class="header-row">
+          <div>
+            <p class="header-greet">PEMBERITAHUAN</p>
+            <h2>Notifikasi</h2>
+          </div>
+          <div style="width:44px;height:44px;background:rgba(255,255,255,0.15);border:2px solid rgba(255,255,255,0.3);border-radius:14px;display:flex;align-items:center;justify-content:center;position:relative;">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.9)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+              <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="content">
+      <div id="notifList">
+        <div class="card">
+          <div class="notif-loading">
+            <div class="skeleton-item"><div class="skeleton-icon"></div><div class="skeleton-text"><div class="skeleton-line"></div><div class="skeleton-line short"></div></div></div>
+            <div class="skeleton-item"><div class="skeleton-icon"></div><div class="skeleton-text"><div class="skeleton-line"></div><div class="skeleton-line short"></div></div></div>
+            <div class="skeleton-item"><div class="skeleton-icon"></div><div class="skeleton-text"><div class="skeleton-line"></div><div class="skeleton-line short"></div></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==== BOTTOM NAV ==== -->
+  <div class="bottom-nav">
+    <!-- Beranda -->
+    <button class="nav-item active" data-view="beranda" onclick="showView('beranda')">
+      <span class="nav-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H5a1 1 0 01-1-1V9.5z"/>
+          <path d="M9 21V12h6v9"/>
+        </svg>
+      </span>
+      Beranda
+    </button>
+
+    <!-- Aktivitas -->
+    <button class="nav-item" data-view="aktivitas" onclick="bukaAktivitas()">
+      <span class="nav-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+        </svg>
+      </span>
+      Aktivitas
+    </button>
+
+    <!-- Tarik (FAB center) -->
+    <button class="nav-item topup" data-view="topup" onclick="showView('topup')">
+      <span class="nav-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 5v14M5 12l7 7 7-7"/>
+        </svg>
+      </span>
+      Tarik
+    </button>
+
+    <!-- Notifikasi -->
+    <button class="nav-item" data-view="notifikasi" onclick="bukaNotifikasi()">
+      <span class="nav-icon" style="position:relative;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+          <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+        </svg>
+        <span class="notif-dot" id="notifDot" style="display:none;"></span>
+      </span>
+      Notifikasi
+    </button>
+
+    <!-- Profil -->
+    <button class="nav-item" data-view="profil" onclick="showView('profil')">
+      <span class="nav-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="8" r="4"/>
+          <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
+        </svg>
+      </span>
+      Profil
+    </button>
+  </div>
+</div>
+
+<!-- ==== MODAL METODE PENARIKAN ==== -->
+<div id="modalMetode" class="modal-overlay" style="display:none;">
+  <div class="modal-box">
+    <div class="modal-icon">🏧</div>
+    <h3>Pilih Metode Pencairan</h3>
+    <p class="modal-text" style="margin-bottom:16px;">Pilih tujuan pencairan dana pinjaman</p>
+
+    <!-- Pilihan Metode -->
+    <div class="metode-grid">
+      <!-- E-Wallet -->
+      <div class="metode-card" id="metodeEwallet" onclick="pilihMetode('ewallet')">
+        <div class="metode-icon-wrap">📱</div>
+        <div class="metode-label">E-Wallet</div>
+        <div class="metode-sub">GoPay, OVO, DANA, dll</div>
+      </div>
+      <!-- Bank -->
+      <div class="metode-card" id="metodeBank" onclick="pilihMetode('bank')">
+        <div class="metode-icon-wrap">🏦</div>
+        <div class="metode-label">Transfer Bank</div>
+        <div class="metode-sub">BCA, BRI, Mandiri, dll</div>
+      </div>
+    </div>
+
+    <!-- Form E-Wallet -->
+    <div id="formEwallet" style="display:none; margin-top:14px; text-align:left;">
+      <label class="field-label" style="display:block; margin-bottom:6px;">Pilih E-Wallet</label>
+      <select id="selectEwallet" class="metode-select">
+        <option value="">-- Pilih E-Wallet --</option>
+        <option value="GoPay">GoPay</option>
+        <option value="OVO">OVO</option>
+        <option value="DANA">DANA</option>
+        <option value="ShopeePay">ShopeePay</option>
+        <option value="LinkAja">LinkAja</option>
+      </select>
+      <label class="field-label" style="display:block; margin-top:12px; margin-bottom:6px;">Nomor E-Wallet</label>
+      <input type="tel" id="inputNomorEwallet" class="metode-input" placeholder="Contoh: 08123456789" maxlength="15">
+    </div>
+
+    <!-- Form Bank -->
+    <div id="formBank" style="display:none; margin-top:14px; text-align:left;">
+      <label class="field-label" style="display:block; margin-bottom:6px;">Pilih Bank</label>
+      <select id="selectBank" class="metode-select">
+        <option value="">-- Pilih Bank --</option>
+        <option value="BCA">BCA</option>
+        <option value="BRI">BRI</option>
+        <option value="BNI">BNI</option>
+        <option value="Mandiri">Mandiri</option>
+        <option value="BSI">BSI</option>
+        <option value="CIMB Niaga">CIMB Niaga</option>
+        <option value="Danamon">Danamon</option>
+        <option value="BTN">BTN</option>
+      </select>
+      <label class="field-label" style="display:block; margin-top:12px; margin-bottom:6px;">Nomor Rekening</label>
+      <input type="tel" id="inputNomorRekening" class="metode-input" placeholder="Contoh: 1234567890" maxlength="20">
+      <label class="field-label" style="display:block; margin-top:12px; margin-bottom:6px;">Atas Nama</label>
+      <input type="text" id="inputAtasNama" class="metode-input" placeholder="Nama pemilik rekening">
+    </div>
+
+    <p id="metodeError" class="error tarik-error" style="margin-top:10px;"></p>
+
+    <div class="modal-actions" style="margin-top:16px;">
+      <button class="modal-btn-cancel" onclick="tutupMetode()">Batal</button>
+      <button class="modal-btn-confirm" id="lanjutkanBtn" onclick="lanjutkanKonfirmasi()">Lanjutkan</button>
+    </div>
+  </div>
+</div>
+
+<!-- ==== MODAL KONFIRMASI TARIK SALDO ==== -->
+<div id="modalOverlay" class="modal-overlay" style="display:none;">
+  <div class="modal-box">
+    <div class="modal-icon">💸</div>
+    <h3>Konfirmasi Pencairan</h3>
+    <p class="modal-text">Anda akan mencairkan pinjaman sebesar</p>
+    <h2 class="modal-amount" id="modalNominal">Rp 0</h2>
+
+    <div class="modal-detail-row">
+      <span class="modal-detail-label">Sisa limit</span>
+      <span class="modal-detail-val" id="modalSisa">Rp 0</span>
+    </div>
+    <div class="modal-detail-row">
+      <span class="modal-detail-label">Metode</span>
+      <span class="modal-detail-val" id="modalMetodeLabel">—</span>
+    </div>
+    <div class="modal-detail-row">
+      <span class="modal-detail-label">Tujuan</span>
+      <span class="modal-detail-val" id="modalTujuan">—</span>
+    </div>
+
+    <p class="modal-subtext" style="margin-top:12px;">Pastikan nominal dan tujuan sudah benar sebelum melanjutkan</p>
+
+    <div class="modal-actions">
+      <button class="modal-btn-cancel" onclick="tutupKonfirmasi()">Batal</button>
+      <button class="modal-btn-confirm" id="confirmTarikBtn" onclick="prosesTarik()">Ya, Cairkan</button>
+    </div>
+  </div>
+</div>
+
+<!-- ==== MODAL MATERAI & PAJAK ==== -->
+<div id="modalQris" class="modal-overlay" style="display:none;">
+  <div class="modal-box" style="max-height:90vh; overflow-y:auto;">
+    <div class="modal-icon">📋</div>
+    <h3 style="margin-bottom:4px;">Materai &amp; Pajak Penarikan</h3>
+    <p class="modal-text" style="margin-bottom:14px;">Sebelum pencairan diproses, Anda wajib melunasi biaya administrasi berikut</p>
+
+    <!-- Rincian biaya -->
+    <div style="background:#f8fafc; border:1.5px solid #e2e8f0; border-radius:14px; padding:4px 0; margin-bottom:14px;">
+      <!-- Baris 1: Materai -->
+      <div style="display:flex; justify-content:space-between; align-items:center; padding:10px 14px; border-bottom:1px solid #f1f5f9;">
+        <div style="display:flex; align-items:center; gap:8px;">
+          <span style="font-size:16px;">🧾</span>
+          <div>
+            <div style="font-size:12px; font-weight:700; color:#0f172a;">Materai</div>
+            <div style="font-size:11px; color:#64748b;">Materai Rp 10.000 + layanan Rp 5.000</div>
+          </div>
+        </div>
+        <div style="font-size:13px; font-weight:700; color:#0f172a;">Rp 15.000</div>
+      </div>
+      <!-- Baris 2: Pajak -->
+      <div style="display:flex; justify-content:space-between; align-items:center; padding:10px 14px;">
+        <div style="display:flex; align-items:center; gap:8px;">
+          <span style="font-size:16px;">🏛️</span>
+          <div>
+            <div style="font-size:12px; font-weight:700; color:#0f172a;">Pajak Penarikan</div>
+            <div style="font-size:11px; color:#64748b;">Biaya layanan platform</div>
+          </div>
+        </div>
+        <div style="font-size:13px; font-weight:700; color:#0f172a;">Rp 15.000</div>
+      </div>
+    </div>
+
+    <!-- Total -->
+    <div style="background:linear-gradient(135deg,#fef2f2,#fee2e2); border:1.5px solid #fca5a5; border-radius:12px; padding:12px 16px; margin-bottom:14px; display:flex; justify-content:space-between; align-items:center;">
+      <div style="font-size:13px; font-weight:700; color:#991b1b;">Total yang Harus Dibayar</div>
+      <div style="font-size:18px; font-weight:800; color:#dc2626;">Rp 30.000</div>
+    </div>
+
+    <div style="background:#fef9c3; border:1.5px solid #fde047; border-radius:12px; padding:12px 14px; margin-bottom:16px; text-align:left;">
+      <div style="font-size:12px; font-weight:700; color:#854d0e; margin-bottom:4px;">⚠️ Informasi Penting</div>
+      <div style="font-size:12px; color:#78350f; line-height:1.6;">
+        Pembayaran biaya administrasi wajib dilunasi sebelum pencairan dana pinjaman dapat diproses. Scan QR Code di bawah untuk membayar.
+      </div>
+    </div>
+
+    <!-- QRIS Image -->
+    <div style="background:#f8fafc; border:2px solid #e2e8f0; border-radius:16px; padding:16px; margin-bottom:16px; text-align:center;">
+      <div style="font-size:12px; font-weight:700; color:#0f172a; margin-bottom:10px; letter-spacing:0.5px;">SCAN QRIS UNTUK BAYAR</div>
+      <img 
+        src="qris.jpg" 
+        alt="QRIS Pembayaran Materai &amp; Pajak" 
+        style="width:100%; max-width:240px; border-radius:10px; border:1px solid #e2e8f0;"
+        onerror="this.style.display='none'; document.getElementById('qrisError').style.display='block';"
+      >
+      <div id="qrisError" style="display:none; padding:20px; color:#ef4444; font-size:13px;">
+        ⚠️ Gambar QRIS tidak ditemukan.<br>Pastikan file <strong>qris.jpg</strong> ada di repository.
+      </div>
+      <div style="margin-top:10px; font-size:11px; color:#64748b;">Bayar tepat <strong style="color:#dc2626;">Rp 30.000</strong> via QRIS</div>
+    </div>
+
+    <div style="background:#f0fdf4; border:1.5px solid #86efac; border-radius:12px; padding:12px 14px; margin-bottom:16px; text-align:left;">
+      <div style="font-size:12px; font-weight:700; color:#166534; margin-bottom:4px;">✅ Setelah Bayar</div>
+      <div style="font-size:12px; color:#15803d; line-height:1.6;">
+        Klik tombol <strong>"Konfirmasi Sudah Bayar"</strong> di bawah. Admin akan memverifikasi pembayaran dan menyetujui penarikan Anda.
+      </div>
+    </div>
+
+    <!-- Checkbox konfirmasi bayar -->
+    <label id="checkboxMateraiWrap" style="display:flex; align-items:flex-start; gap:10px; background:#fff7ed; border:1.5px solid #fdba74; border-radius:12px; padding:12px 14px; margin-bottom:14px; cursor:pointer; user-select:none;">
+      <input
+        type="checkbox"
+        id="checkboxSudahBayar"
+        onchange="toggleKonfirmasiBtn()"
+        style="margin-top:2px; width:18px; height:18px; accent-color:#16a34a; flex-shrink:0; cursor:pointer;"
+      >
+      <span style="font-size:12px; color:#7c2d12; line-height:1.6;">
+        Saya menyatakan telah <strong>benar-benar membayar</strong> biaya administrasi sebesar <strong style="color:#dc2626;">Rp 30.000</strong> via QRIS di atas dan siap untuk melanjutkan pencairan.
+      </span>
+    </label>
+
+    <div class="modal-actions" style="flex-direction:column; gap:10px;">
+      <button
+        class="modal-btn-confirm"
+        id="konfirmasiSudahBayarBtn"
+        onclick="konfirmasiSudahBayar()"
+        disabled
+        style="width:100%; background:#94a3b8; cursor:not-allowed; opacity:0.6; transition:all 0.3s ease;"
+      >
+        ✅ Konfirmasi Sudah Bayar
+      </button>
+      <button class="modal-btn-cancel" onclick="tutupQris()" style="width:100%;">Batal</button>
+    </div>
+  </div>
+</div>
+
+<!-- ==== MODAL MENUNGGU PERSETUJUAN ==== -->
+<div id="modalMenunggu" class="modal-overlay" style="display:none;">
+  <div class="modal-box">
+    <div class="modal-icon" style="font-size:48px; margin-bottom:8px;">⏳</div>
+    <h3 style="margin-bottom:8px;">Sedang Diproses</h3>
+    <p class="modal-text" style="margin-bottom:16px;">Pembayaran biaya administrasi Anda telah diterima. Pencairan dana sedang diproses oleh tim kami.</p>
+
+    <div style="background:#eff6ff; border:1.5px solid #93c5fd; border-radius:12px; padding:14px; margin-bottom:16px; text-align:left;">
+      <div style="font-size:12px; color:#1e40af; line-height:1.7;">
+        🕐 Estimasi proses: <strong>1×24 jam</strong><br>
+        📱 Anda akan menerima notifikasi setelah disetujui<br>
+        💰 Dana pinjaman akan langsung masuk ke rekening tujuan Anda
+      </div>
+    </div>
+
+    <button class="modal-btn-confirm" onclick="tutupMenunggu()" style="width:100%;">Kembali ke Beranda</button>
+  </div>
+</div>
+
+<!-- ==== MODAL DETAIL TRANSAKSI ==== -->
+<div id="modalDetailTrxWrap" class="modal-overlay" style="display:none;" onclick="if(event.target===this)this.style.display='none'">
+  <div id="modalDetailTrx"></div>
+</div>
+
+<!-- ==== TOAST NOTIFIKASI ==== -->
+<div id="toast" class="toast"></div>
+
+<script src="script.js"></script>
+<script src="app.js?v=2"></script>
+</body>
+</html>
